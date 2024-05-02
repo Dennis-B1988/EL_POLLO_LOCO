@@ -20,7 +20,7 @@ document.addEventListener('keydown', (event) => {
         keyboard.UP = true;
     } else if (event.key === 'ArrowDown') {
         keyboard.DOWN = true;
-    } else if (event.key === 'Space') {
+    } else if (event.key === ' ') {
         keyboard.SPACE = true;
     }
 })
@@ -35,7 +35,7 @@ document.addEventListener('keyup', (event) => {
         keyboard.UP = false;
     } else if (event.key === 'ArrowDown') {
         keyboard.DOWN = false;
-    } else if (event.key === 'Space') {
+    } else if (event.key === ' ') {
         keyboard.SPACE = false;
     }
 })
