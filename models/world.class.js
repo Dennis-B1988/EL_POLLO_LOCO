@@ -7,6 +7,9 @@ class World {
     keyboard;
     camera_x = 0;
     statusBar = new StatusBar();
+    bottleStatus = new BottleStatus();
+    bottlePickUp = new Bottle();
+    coinStatus = new CoinStatus();
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -27,20 +30,20 @@ class World {
 
     run() {
         setInterval(() => {
-            this.checkCollisions();
+            // this.checkCollisions();
             this.checkThrowableObjects(); 
         }, 200);
     }
 
 
-    checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.statusBar.setPercentage(this.character.energy);
-            }
-        })       
-    }
+    // checkCollisions() {
+    //     this.level.enemies.forEach((enemy) => {
+    //         if(this.character.isColliding(enemy)) {
+    //             this.character.hit();
+    //             this.statusBar.setPercentage(this.character.energy);
+    //         }
+    //     })       
+    // }
 
 
     checkThrowableObjects() {
@@ -61,11 +64,13 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
+        this.addToMap(this.bottleStatus);
+        this.addToMap(this.coinStatus);
         this.ctx.translate(this.camera_x, 0);
-
         
+        this.addToMap(this.bottlePickUp);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.level.enemies);
+        // this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         
         this.ctx.translate(-this.camera_x, 0);

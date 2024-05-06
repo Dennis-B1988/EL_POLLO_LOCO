@@ -27,12 +27,17 @@ class DrawableObject {
 
 
     draw(ctx) {
+        try {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+        } catch(e) {
+            console.warn('Error in draw', e);
+            console.log('Could  not load Image, ', this.img.src);
+        }
     }
 
 
     drawFrame(ctx) {
-        if(this instanceof Character || this instanceof Chicken || this instanceof Endboss) {
+        if(this instanceof Character || this instanceof Chicken || this instanceof Endboss || this instanceof Bottle) {
             ctx.beginPath();
             ctx.lineWidth = 3;
             ctx.strokeStyle = 'blue';

@@ -1,4 +1,14 @@
+@font-face {
+  font-family: 'zabras';
+  src: url('./assets/font/zabars/zabars.ttf') format('truetype');
+}
+
 body {
+  height: 100vh;
+  font-family: 'Zabras', Arial, Helvetica, sans-serif;
+  background-image: url('./assets/img/10_page_background/desert-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -7,6 +17,46 @@ body {
   align-items: center;
 }
 
+.game-content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+h1 {
+  font-size: 64px;
+  letter-spacing: 3px;
+  text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
 canvas {
   background-color: black;
+  display: block;
+}
+
+.controls {
+  font-size: 24px;
+}
+
+@media only screen and (max-width: 760px) {
+  h1 {
+    display: none;
+  }
+  canvas {
+    height: 100vh;
+    width: 100%;
+  }
+}
+
+@media only screen and (max-height: 640px) {
+  h1 {
+    display: none;
+  }
+  canvas {
+    height: 100vh;
+    width: 100%;
+  }
 }
