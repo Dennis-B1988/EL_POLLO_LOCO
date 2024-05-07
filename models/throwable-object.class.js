@@ -1,10 +1,10 @@
 class ThrowableObject extends MovableObject {
-    // IMAGES_THROWING = [
-    //     './assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
-    //     './assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
-    //     './assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
-    //     './assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
-    // ]
+    IMAGES_THROWING = [
+        './assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/2_bottle_rotation.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
+    ]
     constructor(x, y) {
         super().loadImage('./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
         this.x = x;
@@ -12,14 +12,15 @@ class ThrowableObject extends MovableObject {
         this.height = 100;
         this.width = 100;
         this.throw();
+        // this.loadImages(this.IMAGES_THROWING);
     }
 
 
     throw(){
-        this.speedY = 30;
+        this.speedY = 0;
         this.applyGravity();
         setInterval(() => {
-            this.x += 10;
+            this.x += 35;
         }, 25)
     }
 

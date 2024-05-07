@@ -1,6 +1,6 @@
 class BottleStatus extends DrawableObject {
     IMAGE_BOTTLE = ['./assets/img/6_salsa_bottle/salsa_bottle.png'];
-    bottles = 0;
+    bottlesAmount = 0;
 
     constructor() {
         super();
@@ -13,7 +13,7 @@ class BottleStatus extends DrawableObject {
     }
 
     bottlesAmount(){
+        
 
-    
     }
 }

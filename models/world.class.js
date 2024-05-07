@@ -8,8 +8,8 @@ class World {
     camera_x = 0;
     statusBar = new StatusBar();
     bottleStatus = new BottleStatus();
-    bottlePickUp = new Bottle();
-    coinStatus = new CoinStatus();
+    // bottlesAmount = 0;
+    coinStatus = new CoinStatus(20, 100);
     throwableObjects = [];
 
     constructor(canvas, keyboard) {
@@ -31,6 +31,8 @@ class World {
     run() {
         setInterval(() => {
             // this.checkCollisions();
+            this.removeBottlesFromMap();
+            this.removeCoinsFromMap();
             this.checkThrowableObjects(); 
         }, 200);
     }
@@ -47,9 +49,12 @@ class World {
 
 
     checkThrowableObjects() {
-        if(this.keyboard.SPACE) {
-            let bottle = new ThrowableObject(this.character.x, this.character.y);
-            this.throwableObjects.push(bottle);
+        if(this.bottleStatus.bottlesAmount > 0) {
+            if(this.keyboard.THROW) {
+                let bottle = new ThrowableObject(this.character.x, this.character.y);
+                this.throwableObjects.push(bottle);
+                this.bottleStatus.bottlesAmount--;
+            }
         }
     }
     
@@ -61,6 +66,8 @@ class World {
         this.addObjectsToMap(this.level.backgroundObjects);
 
         this.addObjectsToMap(this.level.clouds);
+        this.addBottlesToMap(this.level.bottlePickUp);
+        this.addCoinsToMap(this.level.coinPickUp);
 
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
@@ -68,7 +75,6 @@ class World {
         this.addToMap(this.coinStatus);
         this.ctx.translate(this.camera_x, 0);
         
-        this.addToMap(this.bottlePickUp);
         this.addToMap(this.character);
         // this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
@@ -80,10 +86,46 @@ class World {
     }
 
 
-    addObjectsToMap(objects) {
+    addObjectsToMap(objects) {    
         objects.forEach((o) => {
             this.addToMap(o);
         });
+    }
+
+
+    addBottlesToMap(bottles) {
+        bottles.forEach((b, index) => {
+            this.addToMap(b, index);
+        });
+    }
+
+
+    removeBottlesFromMap() {
+        if(this.bottleStatus.bottlesAmount < 4) {
+            this.level.bottlePickUp.forEach((bottle) => {
+                if(this.character.isColliding(bottle)) {
+                    this.level.bottlePickUp.splice(bottle, 1);
+                    this.bottleStatus.bottlesAmount++;
+                }
+            }) 
+        }
+    }
+
+
+    addCoinsToMap(coins) {
+        coins.forEach((c, index) => {
+            this.addToMap(c, index);
+        });
+    }
+
+
+    removeCoinsFromMap() {
+        this.level.coinPickUp.forEach((coin) => {
+            if(this.character.isColliding(coin)) {
+                this.level.coinPickUp.splice(coin, 1);
+                this.coinStatus.coinsAmount++;
+            }
+        }) 
     }
 
     
