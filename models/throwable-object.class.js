@@ -22,6 +22,7 @@ class ThrowableObject extends MovableObject {
         setInterval(() => {
             this.x += 35;
         }, 25)
+        world.character.lastIdleTime = new Date().getTime();
     }
 
 

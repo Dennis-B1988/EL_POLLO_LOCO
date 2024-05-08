@@ -10,4 +10,6 @@ class CoinStatus extends DrawableObject {
         this.width = 50;
         
     }
+
+    
 }

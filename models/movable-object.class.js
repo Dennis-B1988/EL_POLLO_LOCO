@@ -3,10 +3,12 @@ class MovableObject extends DrawableObject {
     currentImage = 0;
     otherDirection = false;
     speedY = 0;
-    acceleration = 1.5;
+    acceleration = 2;
     energy = 100;
     characterIsDead = false;
     lastHit = 0;
+    timepassed = 0;
+    
 
 
     applyGravity() {
@@ -52,35 +54,43 @@ class MovableObject extends DrawableObject {
 
 
     isColliding (mo) {
-        // return  (this.x + this.width) >= mo.y && this.x <= (mo.X + mo.width) && 
-        //         (this.y + this.offsetY + this.height) >= mo.y &&
-        //         (this.y + this.offsetY) <= (mo.y + mo.height) && 
-        //         mo.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
+        return  (this.x + this.width - this.offset.right >= mo.x + mo.offset.left &&
+                this.y + this.height - this.offset.bottom >= mo.y + mo.offset.top &&
+                this.x + this.offset.left < mo.x + mo.width - this.offset.right && 
+                this.y + this.offset.top < mo.y + mo.height - this.offset.bottom);
 
-        return this.x + this.width >= mo.x &&
-                this.y + this.height >= mo.y &&
-                this.x <= mo.x &&
-                this.y <= mo.y + mo.height;
+        // return this.x + this.width >= mo.x &&
+        //         this.y + this.height >= mo.y &&
+        //         this.x <= mo.x &&
+        //         this.y <= mo.y + mo.height;
     }
 
 
     hit() {
-        this.energy -= 20;
-        if(this.energy <= 0) {
-            this.energy = 0;
-            this.isDead();
-        } else {
-            this.lastHit = new Date().getTime();
+        if(this.timepassed > 1.5) {
+            this.energy -= 20;
+            if(this.energy <= 0) {
+                this.energy = 0;
+                this.isDead();
+            } else {
+                this.lastHit = new Date().getTime();
+            }
         }
     }
 
 
+    // isHurt() {
+    //     let timepassed = new Date().getTime() - this.lastHit;
+    //     timepassed = timepassed / 1000;
+    //     return timepassed < 1.5;
+    // }
+    
     isHurt() {
-        let timepassed = new Date().getTime() - this.lastHit;
-        timepassed = timepassed / 1000;
-        return timepassed < 1.5;
+        this.timepassed = new Date().getTime() - this.lastHit;
+        this.timepassed = this.timepassed / 1000;
+        return this.timepassed;
     }
-
+    
 
     isDead() {
         return this.energy == 0;
