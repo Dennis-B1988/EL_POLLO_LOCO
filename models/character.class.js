@@ -99,7 +99,7 @@ class Character extends MovableObject {
         }, 50);
 
         setInterval(() => {
-            if(this.timeDifference > 1000) {
+            if(this.timeDifference > 15000) {
                 this.playAnimation(this.IMAGES_SLEEPING);
             }
         }, 1000 / 25);
@@ -128,6 +128,13 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_WALKING);
             this.lastIdleTime = new Date().getTime();
         }  
+    }
+
+
+    characterHitByEndboss(){
+        // if(this.isHitEndboss()) {
+            this.knockback();
+        // }
     }
 
 

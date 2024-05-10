@@ -5,11 +5,10 @@ class MovableObject extends DrawableObject {
     speedY = 0;
     acceleration = 2;
     energy = 100;
-    characterIsDead = false;
+    energyBoss = 100;
     lastHit = 0;
     timepassed = 0;
     
-
 
     applyGravity() {
         setInterval(() => {
@@ -44,6 +43,11 @@ class MovableObject extends DrawableObject {
         this.speedY = 25;
     }
 
+
+    knockback() {
+        this.x -= 250;
+    }
+
     
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -66,7 +70,7 @@ class MovableObject extends DrawableObject {
     }
 
 
-    hit() {
+    isHitNormalChicken() {
         if(this.timepassed > 1.5) {
             this.energy -= 20;
             if(this.energy <= 0) {
@@ -75,6 +79,41 @@ class MovableObject extends DrawableObject {
             } else {
                 this.lastHit = new Date().getTime();
             }
+        }
+    }
+
+
+    isHitSmallChicken() {
+        if(this.timepassed > 1.5) {
+            this.energy -= 10;
+            if(this.energy <= 0) {
+                this.energy = 0;
+                this.isDead();
+            } else {
+                this.lastHit = new Date().getTime();
+            }
+        }
+    }
+
+
+    isHitEndboss() {
+        if(this.timepassed > 1.5) {
+            this.energy -= 33.34;
+            if(this.energy <= 0) {
+                this.energy = 0;
+                this.isDead();
+            } else {
+                this.lastHit = new Date().getTime();
+            }
+        }
+    }
+
+
+    hittingEndbossWithBottle(){
+        this.energyBoss -= 20;
+        if(this.energyBoss <= 0) {
+            this.energyBoss = 0;
+            this.isDeadBoss();
         }
     }
 
@@ -88,13 +127,18 @@ class MovableObject extends DrawableObject {
     isHurt() {
         this.timepassed = new Date().getTime() - this.lastHit;
         this.timepassed = this.timepassed / 1000;
-        return this.timepassed;
+        return this.timepassed < 1.5;
     }
     
 
     isDead() {
         return this.energy == 0;
         // this.characterIsDead = true;
+    }
+
+
+    isDeadBoss() {
+        return this.energyBoss == 0;
     }
 
 }
