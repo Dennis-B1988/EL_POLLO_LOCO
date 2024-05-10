@@ -36,7 +36,7 @@ class Endboss extends MovableObject {
     
 
     setInterval(() => {
-            if(this.energyBoss === 0) {
+            if(world.movableObject.energyBoss === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
             }  else {
                 this.playAnimation(this.IMAGES_WALKING);

@@ -97,7 +97,7 @@ class MovableObject extends DrawableObject {
 
 
     isHitEndboss() {
-        if(this.timepassed > 1.5) {
+        if(this.timepassed > 1.5 && world.movableObject.energyBoss > 0) {
             this.energy -= 33.34;
             if(this.energy <= 0) {
                 this.energy = 0;
@@ -115,6 +115,7 @@ class MovableObject extends DrawableObject {
             this.energyBoss = 0;
             this.isDeadBoss();
         }
+        return this.energyBoss
     }
 
 
@@ -129,6 +130,11 @@ class MovableObject extends DrawableObject {
         this.timepassed = this.timepassed / 1000;
         return this.timepassed < 1.5;
     }
+
+
+    // isHurtBoss() {
+        
+    // }
     
 
     isDead() {
