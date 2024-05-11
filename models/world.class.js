@@ -139,9 +139,19 @@ class World {
 
 
     checkBottleCollisions() {
+        this.bottleHitsGround();
         this.bottleNormalChicken();
         this.bottleSmallChicken();
         this.bottleEndboss();
+    }
+
+
+    bottleHitsGround() {
+        this.throwableObjects.forEach((bottle, index) => {
+            if(bottle.y === 512) {
+                this.throwableObjects.splice(index, 1);
+            }
+        })
     }
 
 
@@ -165,7 +175,7 @@ class World {
                     console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
                     this.level.smallChicken.splice(enemyIndex, 1);
                     this.throwableObjects.splice(bottleIndex, 1);
-                }
+                } 
             });
         })
     }

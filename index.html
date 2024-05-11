@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,19 +24,65 @@
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/level.class.js"></script>
     <script src="./levels/level_1.js"></script>
+    <script src="./js/start-screen.js"></script>
     <script src="./js/game.js"></script>
   </head>
   <body onload="init()">
-    <div class="game-content">
+    <div class="game-content none">
       <h1>El Pollo Loco</h1>
 
       <canvas id="canvas" width="720" height="480"></canvas>
 
-      <div class="controls">
+      <!-- <div class="controls">
         <span>Arrow Left/A = Move Left</span>
         <span>Arrow Right/D = Move Right</span>
         <span>Arrow Up/W = Jump</span>
         <span>Space/D = Throw Bottle</span>
+      </div> -->
+    </div>
+
+    <div class="start-bg">
+      <h1 class="start-title">El Pollo Loco</h1>
+      <div class="start-screen">
+        <div class="top">
+          <div class="top-left">
+            <button class="ln-btn" onclick="legalNotice()">Legal Notice</button>
+          </div>
+          <div class="top-middle">
+            <button class="start-btn" onclick="startGame()">Start Game</button>
+          </div>
+          <div class="top-right">
+            <div class="sound">
+              <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
+            </div>
+          </div>
+        </div>
+        <div class="middle"></div>
+        <div class="bottom">
+          <div class="bottom-left">
+            <button class="left"></button>
+            <button class="right"></button>
+          </div>
+          <div class="bottom-right">
+            <img class="wanted" src="./assets/img/9_intro_outro_screens/start/wanted.jpg" alt="" />
+          </div>
+        </div>
+      </div>
+      <div class="legal-notice none">
+        <div class="ln-top">
+          <img
+            class="back-arrow"
+            src="./assets/img/9_intro_outro_screens/start/arrow-back.png"
+            alt="return to main menu"
+            onclick="goBack()"
+          />
+          <span class="go-back">Back</span>
+        </div>
+        <p>
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse voluptate totam soluta est impedit
+          reprehenderit dicta placeat veniam illum voluptatibus necessitatibus ea aliquid, laborum mollitia tenetur
+          magnam minima neque commodi.
+        </p>
       </div>
     </div>
   </body>

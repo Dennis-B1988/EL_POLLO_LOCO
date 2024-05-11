@@ -8,7 +8,9 @@ class Character extends MovableObject {
     lastIdleTime;
     timeDifference;
     IMAGES_IDLE = [
-        './assets/img/2_character_pepe/1_idle/idle/I-1.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-8.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-9.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-10.png'
     ];
     IMAGES_WALKING = [
         './assets/img/2_character_pepe/2_walk/W-21.png',
@@ -96,7 +98,7 @@ class Character extends MovableObject {
             } else {
                 this.characterJumpOrWalk();
             }
-        }, 50);
+        }, 100);
 
         setInterval(() => {
             if(this.timeDifference > 15000) {

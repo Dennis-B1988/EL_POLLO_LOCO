@@ -37,8 +37,106 @@ canvas {
   display: block;
 }
 
+button {
+  cursor: pointer;
+}
+
+.start-bg {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.start-screen {
+  height: 480px;
+  width: 720px;
+  background-image: url('./assets/img/9_intro_outro_screens/start/startscreen_1.png');
+  background-repeat: no-repeat;
+  background-size: 720px 480px;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 2px solid transparent;
+}
+
+.start-title {
+  display: block;
+}
+
 .controls {
   font-size: 24px;
+}
+
+.top {
+  height: 32%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sound img {
+  height: 30px;
+  cursor: pointer;
+}
+
+.top-middle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.middle {
+  height: 32%;
+  width: 100%;
+}
+
+.bottom {
+  height: 32%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.wanted {
+  height: 100%;
+  margin-right: 20px;
+}
+
+.legal-notice {
+  height: 480px;
+  width: 720px;
+  z-index: 500;
+  background-image: url('./assets/img/10_page_background/desert-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* border: 2px solid black; */
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.ln-top {
+  display: flex;
+  align-items: center;
+}
+
+.back-arrow {
+  cursor: pointer;
+}
+
+.go-back {
+  font-size: 32px;
+}
+
+.none {
+  display: none;
 }
 
 @media only screen and (max-width: 760px) {
