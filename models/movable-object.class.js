@@ -48,6 +48,11 @@ class MovableObject extends DrawableObject {
         this.x -= 250;
     }
 
+
+    // isNearEndboss() {
+    //     return this.character.x;
+    // }
+
     
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -62,11 +67,6 @@ class MovableObject extends DrawableObject {
                 this.y + this.height - this.offset.bottom >= mo.y + mo.offset.top &&
                 this.x + this.offset.left < mo.x + mo.width - this.offset.right && 
                 this.y + this.offset.top < mo.y + mo.height - this.offset.bottom);
-
-        // return this.x + this.width >= mo.x &&
-        //         this.y + this.height >= mo.y &&
-        //         this.x <= mo.x &&
-        //         this.y <= mo.y + mo.height;
     }
 
 

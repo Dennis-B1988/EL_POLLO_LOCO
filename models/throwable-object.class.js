@@ -6,10 +6,10 @@ class ThrowableObject extends MovableObject {
         './assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
     ];
     offset = {
-        top: 10,
-        bottom: 10,
-        left: 30,
-        right: 30
+        top: 5,
+        bottom: 5,
+        left: 20,
+        right: 20
     };
 
     constructor(x, y) {

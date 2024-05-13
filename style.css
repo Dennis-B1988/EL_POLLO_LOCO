@@ -81,15 +81,25 @@ button {
   align-items: center;
 }
 
-.sound img {
-  height: 30px;
-  cursor: pointer;
+.top-left {
+  /* margin-left: 20px; */
 }
 
 .top-middle {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.top-right {
+  display: flex;
+  gap: 8px;
+  /* margin-right: 20px; */
+}
+
+.sound img {
+  height: 30px;
+  cursor: pointer;
 }
 
 .middle {
@@ -116,7 +126,7 @@ button {
   background-image: url('./assets/img/10_page_background/desert-background.png');
   background-repeat: no-repeat;
   background-size: cover;
-  /* border: 2px solid black; */
+  border: 2px solid black;
   display: flex;
   flex-direction: column;
   padding: 10px;
@@ -124,6 +134,32 @@ button {
 
 .ln-top {
   display: flex;
+  align-items: center;
+}
+
+.controls {
+  height: 480px;
+  width: 720px;
+  z-index: 500;
+  background-image: url('./assets/img/10_page_background/desert-background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.controls-top {
+  display: flex;
+  align-items: center;
+}
+
+.controls-description {
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
 }
 
@@ -135,17 +171,36 @@ button {
   font-size: 32px;
 }
 
-.none {
+/* .none {
   display: none;
-}
+} */
 
 @media only screen and (max-width: 760px) {
   h1 {
     display: none;
   }
+
   canvas {
-    /* height: 100vh; */
     width: 100%;
+    border: none;
+  }
+
+  .start-screen {
+    width: 100%;
+    border: none;
+    background-size: cover;
+  }
+
+  .legal-notice {
+    width: 100%;
+    border: none;
+    background-size: cover;
+  }
+
+  .controls {
+    width: 100%;
+    border: none;
+    background-size: cover;
   }
 }
 
@@ -155,6 +210,25 @@ button {
   }
   canvas {
     height: 100vh;
-    /* width: 100%; */
+    border: none;
+    background-size: cover;
+  }
+
+  .start-screen {
+    height: 100vh;
+    border: none;
+    background-size: cover;
+  }
+
+  .legal-notice {
+    height: 100vh;
+    border: none;
+    background-size: cover;
+  }
+
+  .controls {
+    height: 100vh;
+    border: none;
+    background-size: cover;
   }
 }

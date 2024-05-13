@@ -24,7 +24,7 @@
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/level.class.js"></script>
     <script src="./levels/level_1.js"></script>
-    <script src="./js/start-screen.js"></script>
+    <!-- <script src="./js/start-screen.js"></script> -->
     <script src="./js/game.js"></script>
   </head>
   <body onload="init()">
@@ -32,16 +32,9 @@
       <h1>El Pollo Loco</h1>
 
       <canvas id="canvas" width="720" height="480"></canvas>
-
-      <!-- <div class="controls">
-        <span>Arrow Left/A = Move Left</span>
-        <span>Arrow Right/D = Move Right</span>
-        <span>Arrow Up/W = Jump</span>
-        <span>Space/D = Throw Bottle</span>
-      </div> -->
     </div>
 
-    <div class="start-bg">
+    <!-- <div class="start-bg">
       <h1 class="start-title">El Pollo Loco</h1>
       <div class="start-screen">
         <div class="top">
@@ -52,6 +45,7 @@
             <button class="start-btn" onclick="startGame()">Start Game</button>
           </div>
           <div class="top-right">
+            <button class="controls-btn" onclick="toggleControls()">Controls</button>
             <div class="sound">
               <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
             </div>
@@ -68,13 +62,14 @@
           </div>
         </div>
       </div>
+
       <div class="legal-notice none">
         <div class="ln-top">
           <img
             class="back-arrow"
             src="./assets/img/9_intro_outro_screens/start/arrow-back.png"
             alt="return to main menu"
-            onclick="goBack()"
+            onclick="goBackLegalNotice()"
           />
           <span class="go-back">Back</span>
         </div>
@@ -84,6 +79,24 @@
           magnam minima neque commodi.
         </p>
       </div>
-    </div>
+
+      <div class="controls none">
+        <div class="controls-top">
+          <img
+            class="back-arrow"
+            src="./assets/img/9_intro_outro_screens/start/arrow-back.png"
+            alt="return to main menu"
+            onclick="goBackControls()"
+          />
+          <span class="go-back">Back</span>
+        </div>
+        <div class="controls-description">
+          <span>Arrow Left = Move Left</span>
+          <span>Arrow Right = Move Right</span>
+          <span>Arrow Up / Space = Jump</span>
+          <span>D = Throw Bottle</span>
+        </div>
+      </div>
+    </div> -->
   </body>
 </html>

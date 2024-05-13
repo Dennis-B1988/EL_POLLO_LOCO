@@ -13,8 +13,20 @@ function legalNotice() {
 }
 
 
-function goBack() {
+function goBackLegalNotice() {
     document.querySelector('.legal-notice').style.display = 'none';
+    document.querySelector('.start-screen').style.display = 'flex';
+}
+
+
+function toggleControls() {
+    document.querySelector('.start-screen').style.display = 'none';
+    document.querySelector('.controls').style.display = 'flex';
+}
+
+
+function goBackControls() {
+    document.querySelector('.controls').style.display = 'none';
     document.querySelector('.start-screen').style.display = 'flex';
 }
 

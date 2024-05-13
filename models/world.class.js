@@ -25,7 +25,7 @@ class World {
         this.setWorld();
         this.run();
         this.collition();
-        this.collitionBottle();
+        this.collitionDamageToEnemy();
         this.collect();
         this.ctx.font = '48px Zabras';
         this.ctx.fillStyle = '#9A3E00';
@@ -89,9 +89,9 @@ class World {
     }
 
 
-    collitionBottle() {
+    collitionDamageToEnemy() {
         setInterval(() => {
-            this.checkBottleCollisions();
+            this.checkDamageToEnemyCollisions();
         }, 25);
     }
 
@@ -106,7 +106,7 @@ class World {
 
     checkCollisionsNormalChicken() {
         this.level.normalChicken.forEach((enemy, index) => {
-            if(this.character.isColliding(enemy)) {
+            if(this.character.isColliding(enemy) && this.character.y > 200) {
                 console.log('Character is colliding with normal chicken ' + index);
                 this.character.isHitNormalChicken();
                 this.statusBar.setPercentage(this.character.energy);
@@ -117,7 +117,7 @@ class World {
 
     checkCollisionsSmallChicken() {
         this.level.smallChicken.forEach((enemy, index) => {
-            if(this.character.isColliding(enemy)) {
+            if(this.character.isColliding(enemy) && this.character.y > 200) {
                 console.log('Character is colliding with small chicken ' + index);
                 this.character.isHitSmallChicken();
                 this.statusBar.setPercentage(this.character.energy);
@@ -138,11 +138,11 @@ class World {
     }
 
 
-    checkBottleCollisions() {
+    checkDamageToEnemyCollisions() {
         this.bottleHitsGround();
-        this.bottleNormalChicken();
-        this.bottleSmallChicken();
-        this.bottleEndboss();
+        this.killNormalChicken();
+        this.killSmallChicken();
+        this.killEndboss();
     }
 
 
@@ -155,46 +155,77 @@ class World {
     }
 
 
-    bottleNormalChicken(){
+    killNormalChicken(){
         this.level.normalChicken.forEach((enemy, enemyIndex) => {
-            this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if(bottle.isColliding(enemy)) {
-                    console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
-                    this.level.normalChicken.splice(enemyIndex, 1);
-                    this.throwableObjects.splice(bottleIndex, 1);
-                }
-            });
+            if(this.character.isColliding(enemy) && this.character.y < 200) {
+                console.log('Character ' + this.character.y + ' is colliding with normal chicken ' + enemy.y);
+                this.level.normalChicken.splice(enemyIndex, 1);
+            }
+            if(this.throwableObjects.length > 0) {
+                this.bottleNormalChicken(enemy, enemyIndex);
+            }
+            
         })
     }
 
 
-    bottleSmallChicken(){
+    bottleNormalChicken(enemy, enemyIndex){
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            if(bottle.isColliding(enemy)) {
+                console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
+                this.level.normalChicken.splice(enemyIndex, 1);
+                this.throwableObjects.splice(bottleIndex, 1);
+            }
+        });
+    }
+
+
+    killSmallChicken(){
         this.level.smallChicken.forEach((enemy, enemyIndex) => {
-            this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if(bottle.isColliding(enemy)) {
-                    console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
-                    this.level.smallChicken.splice(enemyIndex, 1);
-                    this.throwableObjects.splice(bottleIndex, 1);
-                } 
-            });
+            if(this.character.isColliding(enemy) && this.character.y < 200) {
+                console.log('Character ' + this.character.y + ' is colliding with small chicken ' + enemy.y);
+                // this.character.y -= 100;
+                this.level.smallChicken.splice(enemyIndex, 1);
+            }
+            if(this.throwableObjects.length > 0) {
+                this.bottleSmallChicken(enemy, enemyIndex);
+            }
+        })
+    }
+    
+    
+    bottleSmallChicken(enemy, enemyIndex){
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            if(bottle.isColliding(enemy)) {
+                console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
+                this.level.smallChicken.splice(enemyIndex, 1);
+                this.throwableObjects.splice(bottleIndex, 1);
+            } 
+        });
+    }
+
+
+    killEndboss(){
+        this.level.endboss.forEach((enemy, endbossIndex) => {
+            if(this.throwableObjects.length > 0) {
+                this.bottleEndboss(enemy, endbossIndex);
+            }
         })
     }
 
 
-    bottleEndboss(){
-        this.level.endboss.forEach((enemy, endbossIndex) => {
-            this.throwableObjects.forEach((bottle, bottleIndex) => {
-                if(bottle.isColliding(enemy)) {
-                    console.log('Bottle ' + bottleIndex + ' is colliding with endboss ' + endbossIndex);
-                    this.throwableObjects.splice(bottleIndex, 1);
-                    this.movableObject.hittingEndbossWithBottle();
-                    this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
-                    // if(this.movableObject.energyBoss === 0){
-                    //     this.level.endboss.splice(endbossIndex, 1);
-                    // }
-                }
-            });
-        })
+    bottleEndboss(enemy, endbossIndex){
+        this.throwableObjects.forEach((bottle, bottleIndex) => {
+            if(bottle.isColliding(enemy)) {
+                console.log('Bottle ' + bottleIndex + ' is colliding with endboss ' + endbossIndex);
+                this.throwableObjects.splice(bottleIndex, 1);
+                this.movableObject.hittingEndbossWithBottle();
+                this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
+                // if(this.movableObject.energyBoss === 0){
+                //     this.level.endboss.splice(endbossIndex, 1);
+                // }
+            }
+        });
     }
 
 
@@ -217,7 +248,7 @@ class World {
     lastThrow(){
         this.timeBetweenThrows = new Date().getTime() - this.lastThrowTime;
         this.timeBetweenThrows = this.timeBetweenThrows / 1000;
-        return this.timeBetweenThrows > 1;
+        return this.timeBetweenThrows > 0.5;
     }
 
 
@@ -314,4 +345,5 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+
 }

@@ -5,8 +5,8 @@ class Character extends MovableObject {
     width = 100;
     speed = 10;
     currentTime = new Date().getTime();
-    lastIdleTime;
-    timeDifference;
+    lastIdleTime = new Date().getTime();
+    timeDifference = 0;
     IMAGES_IDLE = [
         './assets/img/2_character_pepe/1_idle/idle/I-8.png',
         './assets/img/2_character_pepe/1_idle/idle/I-9.png',
@@ -64,7 +64,7 @@ class Character extends MovableObject {
         left: 20,
         right: 20
     };
-
+    sleeping = false;
     walking_sound = new Audio();
 
     constructor() {
@@ -88,23 +88,43 @@ class Character extends MovableObject {
                 this.checkTimeSince();
         }, 1000 / 60);
 
+
+        setInterval(() => {
+            if(this.timeDifference > 15000) {
+                this.playAnimation(this.IMAGES_SLEEPING);
+                this.sleeping = true;
+            } else if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                this.characterIdle();
+            }
+        }, 1000 / 1);
+
+
         setInterval(() => {
             if(this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
-            } else if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
-                this.playAnimation(this.IMAGES_IDLE);
             } else {
                 this.characterJumpOrWalk();
             }
         }, 100);
 
+        // setInterval(() => {
+        //     // this.timeDifference = 3000;
+        //     if(this.timeDifference > 1500) {
+        //         this.playAnimation(this.IMAGES_SLEEPING);
+        //     }
+        // }, 1000 / 5);
+    }
+
+
+    characterSleeping(){
         setInterval(() => {
-            if(this.timeDifference > 15000) {
+            // this.timeDifference = 3000;
+            // if(this.timeDifference > 1500) {
                 this.playAnimation(this.IMAGES_SLEEPING);
-            }
-        }, 1000 / 25);
+            // }
+        }, 1000 / 5);
     }
 
 
@@ -155,7 +175,7 @@ class Character extends MovableObject {
 
     checkTimeSince(){
         this.timeDifference = this.currentTime - this.lastIdleTime;
-        return this.timeDifference;
+        return this.timeDifference > 15000;
     }
 
     
