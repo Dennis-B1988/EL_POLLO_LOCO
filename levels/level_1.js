@@ -1,4 +1,9 @@
-const level_1 = new Level(
+let level_1;
+
+function initLevel(){
+
+
+level_1 = new Level(
     [
         new Chicken(), 
         new Chicken(), 
@@ -78,3 +83,4 @@ const level_1 = new Level(
         new Coins('./assets/img/8_coin/coin_2.png', 610, 340),
     ]
 );
+}

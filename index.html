@@ -24,38 +24,60 @@
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/level.class.js"></script>
     <script src="./levels/level_1.js"></script>
-    <!-- <script src="./js/start-screen.js"></script> -->
+    <script src="./js/start-screen.js"></script>
     <script src="./js/game.js"></script>
   </head>
-  <body onload="init()">
-    <div class="game-content none">
-      <h1>El Pollo Loco</h1>
+  <body>
+    <h1 class="title">El Pollo Loco</h1>
 
-      <canvas id="canvas" width="720" height="480"></canvas>
-    </div>
+    <section class="game-screen">
+      <div class="game-content none">
+        <canvas id="canvas" width="720" height="480"></canvas>
+        <div class="control-buttons-left">
+          <button id="left" class="left">
+            <img src="./assets/img/11_mobile/move-left.png" alt="left" />
+          </button>
+          <button id="right" class="right">
+            <img src="./assets/img/11_mobile/move-right.png" alt="right" />
+          </button>
+        </div>
+        <div class="control-buttons-right">
+          <button id="jump" class="jump">
+            <img src="./assets/img/11_mobile/jump.png" alt="jump" />
+          </button>
+          <button id="throw" class="throw">
+            <img src="./assets/img/6_salsa_bottle/bottle_rotation/bottle_button.png" alt="throw bottle" />
+          </button>
+        </div>
+      </div>
 
-    <!-- <div class="start-bg">
-      <h1 class="start-title">El Pollo Loco</h1>
+      <!-- <div class="start-bg"> -->
+      <!-- <h1 class="start-title">El Pollo Loco</h1> -->
       <div class="start-screen">
         <div class="top">
           <div class="top-left">
-            <button class="ln-btn" onclick="legalNotice()">Legal Notice</button>
+            <div class="play" onclick="init()">
+              PLAY <img src="./assets/img/9_intro_outro_screens/start/play.png" alt="play" />
+            </div>
           </div>
-          <div class="top-middle">
-            <button class="start-btn" onclick="startGame()">Start Game</button>
-          </div>
+          <!-- <div class="top-middle"> -->
+
+          <!-- </div> -->
           <div class="top-right">
-            <button class="controls-btn" onclick="toggleControls()">Controls</button>
+            <div class="controls-btn" onclick="toggleControls()">
+              <img src="./assets/img/9_intro_outro_screens/start/controller.png" alt="controls" />
+            </div>
             <div class="sound">
               <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
             </div>
           </div>
         </div>
-        <div class="middle"></div>
+        <!-- <div class="middle">
+          <button class="start-btn" onclick="startGame()">Start Game</button>
+        </div> -->
         <div class="bottom">
           <div class="bottom-left">
-            <button class="left"></button>
-            <button class="right"></button>
+            <div class="ln-btn" onclick="legalNotice()">Impressum</div>
           </div>
           <div class="bottom-right">
             <img class="wanted" src="./assets/img/9_intro_outro_screens/start/wanted.jpg" alt="" />
@@ -73,11 +95,28 @@
           />
           <span class="go-back">Back</span>
         </div>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Esse voluptate totam soluta est impedit
-          reprehenderit dicta placeat veniam illum voluptatibus necessitatibus ea aliquid, laborum mollitia tenetur
-          magnam minima neque commodi.
-        </p>
+        <div class="impressum">
+          <h1>Impressum</h1>
+          <p>Angaben gemäß § 5 TMG</p>
+          <p>
+            Dennis Baust <br />
+            Johann-Strauß-Straße 11<br />
+            69190 Walldorf <br />
+          </p>
+          <p>
+            <strong>Vertreten durch: </strong><br />
+            Dennis Baust<br />
+          </p>
+          <p>
+            <strong>Kontakt:</strong> <br />
+            Telefon: 0176-42641696<br />
+            E-Mail: <a href="mailto:baust.dennis@gmail.com">baust.dennis@gmail.com</a><br />
+          </p>
+          Impressum vom <a href="https://www.impressum-generator.de">Impressum Generator</a> der
+          <a href="https://www.kanzlei-hasselbach.de/"
+            >Kanzlei Hasselbach, Rechtsanwälte für Arbeitsrecht und Familienrecht</a
+          >
+        </div>
       </div>
 
       <div class="controls none">
@@ -97,6 +136,7 @@
           <span>D = Throw Bottle</span>
         </div>
       </div>
-    </div> -->
+    </section>
+    <!-- </div> -->
   </body>
 </html>

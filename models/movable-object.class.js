@@ -119,6 +119,7 @@ class MovableObject extends DrawableObject {
     }
 
 
+
     // isHurt() {
     //     let timepassed = new Date().getTime() - this.lastHit;
     //     timepassed = timepassed / 1000;
@@ -129,6 +130,10 @@ class MovableObject extends DrawableObject {
         this.timepassed = new Date().getTime() - this.lastHit;
         this.timepassed = this.timepassed / 1000;
         return this.timepassed < 1.5;
+    }
+
+    isHurtEndboss() {
+        return this.timepassed > 0.4 && world.movableObject.energyBoss > 0;
     }
 
 

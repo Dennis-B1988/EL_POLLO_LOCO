@@ -1,6 +1,7 @@
 class World {
 
     character = new Character();
+    normalEnemy = new Chicken();
     level = level_1;
     canvas;
     ctx;
@@ -162,7 +163,10 @@ class World {
                 this.level.normalChicken.splice(enemyIndex, 1);
             }
             if(this.throwableObjects.length > 0) {
-                this.bottleNormalChicken(enemy, enemyIndex);
+                this.normalEnemy.chickenDead();
+                setTimeout(() => {
+                    this.level.normalChicken.splice(enemyIndex, 1);
+                }, 2000);
             }
             
         })
@@ -173,7 +177,6 @@ class World {
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
                 console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
-                this.level.normalChicken.splice(enemyIndex, 1);
                 this.throwableObjects.splice(bottleIndex, 1);
             }
         });

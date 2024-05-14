@@ -2,7 +2,7 @@
 
 function startGame() {
     document.querySelector('.start-screen').style.display = 'none';
-    document.querySelector('.start-title').style.display = 'none';
+    // document.querySelector('.start-title').style.display = 'none';
     document.querySelector('.game-content').style.display = 'flex';
 }
 
