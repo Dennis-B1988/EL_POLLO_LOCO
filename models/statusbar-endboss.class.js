@@ -7,8 +7,8 @@ class StatusBarEndboss extends DrawableObject {
         './assets/img/7_statusbars/2_statusbar_endboss/green/green80.png',
         './assets/img/7_statusbars/2_statusbar_endboss/green/green100.png'
     ];
-
     percentage = 100;
+    bossTriggered = false;
 
 
     constructor() {

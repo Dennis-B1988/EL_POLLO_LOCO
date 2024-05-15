@@ -1,6 +1,6 @@
 class Endboss extends MovableObject {
     y = -20
-    x = 2500;
+    x = 4300;
     height = 500
     width = 250
     characterNearEndboss;
@@ -48,6 +48,7 @@ class Endboss extends MovableObject {
     };
     bossAlerted = false;
 
+
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -60,27 +61,20 @@ class Endboss extends MovableObject {
 
     animate() {
         let i = 0;
-        // setInterval(() => {
-        //     this.characterNearEndboss = this.x - world.character.x;
-        //     if(!this.bossAlerted && this.characterNearEndboss < 150) {
-        //         this.bossAlerted = true;
-        //     }
-        // }, 10);
-        
-
-        // setInterval(() => {
-        //     if(!this.bossAlerted && this.characterNearEndboss < 150) {
-        //         this.playAnimation(this.IMAGES_ALERT);
-        //     }
-        // }, 1000 / 1);
-
 
         setInterval(() => {
             if(world.movableObject.energyBoss === 0) {
-                this.playAnimation(this.IMAGES_DEAD); 
+                this.playAnimation(this.IMAGES_DEAD);
+                document.querySelector('.game-won').classList.remove('none');
+                if(world.coinStatus.coinsAmount === 35){
+                    document.querySelector('.won').classList.add('none');
+                    document.querySelector('.won-all-coins').classList.remove('none');
+                } else {
+                    document.querySelector('.won').classList.remove('none');
+                    document.querySelector('.won-all-coins').classList.add('none');
+                }
                 setTimeout(() => {
-                   clearAllIntervals();
-                   restartGame();
+                    clearAllIntervals();
                 }, 3000);
             }
         }, 200);
@@ -89,10 +83,11 @@ class Endboss extends MovableObject {
         setInterval(() => {
             if(i < 10) {
                 this.playAnimation(this.IMAGES_ALERT);
+            } else if(this.isHurtEndboss()){
+                this.playAnimation(this.IMAGES_HURT);
             } else if(this.x - world.character.x < 100) {
                 this.playAnimation(this.IMAGES_ATTACK);
-            }
-            else {
+            } else {
                 this.playAnimation(this.IMAGES_WALKING);
             }
             i++;
@@ -103,29 +98,9 @@ class Endboss extends MovableObject {
         }, 300);
     
 
-        // setInterval(() => {
-        //     if(world.movableObject.energyBoss === 0) {
-        //         this.playAnimation(this.IMAGES_DEAD);
-        //     } else if(!this.bossAlerted && this.characterNearEndboss < 150) {
-                
-        //         setTimeout(() => {
-        //             this.nearEndboss();
-        //         this.bossAlerted = true;
-        //         }, 2000);
-        //     } else {
-        //         this.playAnimation(this.IMAGES_WALKING);
-        //     }
-        // }, 300);
     
     }
     
 
-
-    // nearEndboss() {
-    //     setInterval(() => {
-    //         this.playAnimation(this.IMAGES_ALERT);
-    //     }, 2000);
-    //     clearInterval(this.nearEndboss());
-    // }
 
 }

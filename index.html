@@ -27,12 +27,35 @@
     <script src="./js/start-screen.js"></script>
     <script src="./js/game.js"></script>
   </head>
-  <body>
+  <body onload="init()">
     <h1 class="title">El Pollo Loco</h1>
 
     <section class="game-screen">
       <div class="game-content none">
         <canvas id="canvas" width="720" height="480"></canvas>
+        <div class="game-won game-result none">
+          <img class="won none" src="./assets/img/9_intro_outro_screens/you_win/You won B.png" alt="game won" />
+          <img
+            class="won-all-coins none"
+            src="./assets/img/9_intro_outro_screens/you_win/You won A.png"
+            alt="game won"
+          />
+          <div class="game-end-btn">
+            <button onclick="init()">Play Again</button>
+            <button onclick="endGame()">Back to menu</button>
+          </div>
+        </div>
+        <div class="game-lost game-result none">
+          <img src="./assets/img/9_intro_outro_screens/game_over/You lost b.png" alt="game lost" />
+          <div class="game-end-btn">
+            <button onclick="init()">Play Again</button>
+            <button onclick="endGame()">Back to menu</button>
+          </div>
+        </div>
+
+        <div class="toggle-sound-game">
+          <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
+        </div>
         <div class="control-buttons-left">
           <button id="left" class="left">
             <img src="./assets/img/11_mobile/move-left.png" alt="left" />
@@ -116,6 +139,17 @@
           <a href="https://www.kanzlei-hasselbach.de/"
             >Kanzlei Hasselbach, Rechtsanwälte für Arbeitsrecht und Familienrecht</a
           >
+          <br />
+          <br />
+          Bilder unter anderem von
+          <a href="https://pixabay.com/"></a>
+          <a href="https://pixabay.com/">Pixabay</a>
+          <br />
+          <br />
+          <a target="_blank" href="https://icons8.com/"></a> Icons von
+          <a target="_blank" href="https://icons8.com">Icons8</a>
+          <br />
+          <a href="https://www.flaticon.com/free-icons/telephone" title="telephone icons">Flaticon</a>
         </div>
       </div>
 
@@ -137,6 +171,7 @@
         </div>
       </div>
     </section>
-    <!-- </div> -->
+
+    <div class="portrait-mode"></div>
   </body>
 </html>

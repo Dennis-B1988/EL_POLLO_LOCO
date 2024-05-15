@@ -18,8 +18,8 @@ class ThrowableObject extends MovableObject {
         this.y = y;
         this.height = 75;
         this.width = 75;
-        this.throw();
         // this.loadImages(this.IMAGES_THROWING);
+        this.throw();
     }
 
 
@@ -29,7 +29,6 @@ class ThrowableObject extends MovableObject {
             setInterval(() => {
                 this.x += 35;
             }, 25)
-            // world.character.lastIdleTime = new Date().getTime();
         } 
 
 

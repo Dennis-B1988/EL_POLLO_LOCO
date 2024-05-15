@@ -1,11 +1,11 @@
 class Bottles extends DrawableObject {
-    height = 80;
-    width = 80;
+    height = 60;
+    width = 60;
     offset = {
         top: 5,
         bottom: 5,
-        left: 30,
-        right: 30
+        left: 20,
+        right: 20
     };
 
     constructor(imagePath, x, y) {

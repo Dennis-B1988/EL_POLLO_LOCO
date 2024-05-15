@@ -8,7 +8,6 @@ class DrawableObject {
 
 
     constructor() {
-        // this.imageCache = {};
     }
 
 

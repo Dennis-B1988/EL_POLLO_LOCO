@@ -49,9 +49,9 @@ class World {
         this.addToMap(this.statusBarEndboss);
         this.addToMap(this.bottleStatus);
         this.addToMap(this.coinStatus);
-        // this.ctx.fillText(this.bottleStatus.bottlesAmount, 65, 103);
+
         this.maximumBottles();
-        // this.ctx.fillText(this.coinStatus.coinsAmount, 65, 143);
+
         this.coinsCurrentAmount();
         this.ctx.translate(this.camera_x, 0);
         
@@ -106,9 +106,8 @@ class World {
 
 
     checkCollisionsNormalChicken() {
-        this.level.normalChicken.forEach((enemy, index) => {
+        this.level.normalChicken.forEach((enemy) => {
             if(this.character.isColliding(enemy) && this.character.y > 200) {
-                console.log('Character is colliding with normal chicken ' + index);
                 this.character.isHitNormalChicken();
                 this.statusBar.setPercentage(this.character.energy);
             }
@@ -117,9 +116,8 @@ class World {
 
 
     checkCollisionsSmallChicken() {
-        this.level.smallChicken.forEach((enemy, index) => {
+        this.level.smallChicken.forEach((enemy) => {
             if(this.character.isColliding(enemy) && this.character.y > 200) {
-                console.log('Character is colliding with small chicken ' + index);
                 this.character.isHitSmallChicken();
                 this.statusBar.setPercentage(this.character.energy);
             }
@@ -128,9 +126,8 @@ class World {
 
 
     checkCollisionsEndboss() {
-        this.level.endboss.forEach((enemy, index) => {
+        this.level.endboss.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
-                console.log('Character is colliding with endboss ' + index);
                 this.character.isHitEndboss();
                 this.statusBar.setPercentage(this.character.energy);
                 this.character.characterHitByEndboss();
@@ -159,16 +156,14 @@ class World {
     killNormalChicken(){
         this.level.normalChicken.forEach((enemy, enemyIndex) => {
             if(this.character.isColliding(enemy) && this.character.y < 200) {
-                console.log('Character ' + this.character.y + ' is colliding with normal chicken ' + enemy.y);
                 this.level.normalChicken.splice(enemyIndex, 1);
             }
             if(this.throwableObjects.length > 0) {
-                this.normalEnemy.chickenDead();
-                setTimeout(() => {
-                    this.level.normalChicken.splice(enemyIndex, 1);
-                }, 2000);
+                // this.normalEnemy.chickenDead();
+                this.bottleNormalChicken(enemy, enemyIndex);
+                    
+
             }
-            
         })
     }
 
@@ -176,7 +171,7 @@ class World {
     bottleNormalChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
+                this.level.normalChicken.splice(enemyIndex, 1);
                 this.throwableObjects.splice(bottleIndex, 1);
             }
         });
@@ -186,8 +181,6 @@ class World {
     killSmallChicken(){
         this.level.smallChicken.forEach((enemy, enemyIndex) => {
             if(this.character.isColliding(enemy) && this.character.y < 200) {
-                console.log('Character ' + this.character.y + ' is colliding with small chicken ' + enemy.y);
-                // this.character.y -= 100;
                 this.level.smallChicken.splice(enemyIndex, 1);
             }
             if(this.throwableObjects.length > 0) {
@@ -200,7 +193,6 @@ class World {
     bottleSmallChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                console.log('Bottle ' + bottleIndex + ' is colliding with normal chicken ' + enemyIndex);
                 this.level.smallChicken.splice(enemyIndex, 1);
                 this.throwableObjects.splice(bottleIndex, 1);
             } 
@@ -209,24 +201,20 @@ class World {
 
 
     killEndboss(){
-        this.level.endboss.forEach((enemy, endbossIndex) => {
+        this.level.endboss.forEach((enemy) => {
             if(this.throwableObjects.length > 0) {
-                this.bottleEndboss(enemy, endbossIndex);
+                this.bottleEndboss(enemy);
             }
         })
     }
 
 
-    bottleEndboss(enemy, endbossIndex){
+    bottleEndboss(enemy){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                console.log('Bottle ' + bottleIndex + ' is colliding with endboss ' + endbossIndex);
                 this.throwableObjects.splice(bottleIndex, 1);
                 this.movableObject.hittingEndbossWithBottle();
                 this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
-                // if(this.movableObject.energyBoss === 0){
-                //     this.level.endboss.splice(endbossIndex, 1);
-                // }
             }
         });
     }
@@ -234,17 +222,14 @@ class World {
 
     checkThrowableObjects() {
         if(this.keyboard.THROW){
-            // this.lastThrow();
             if(this.lastThrow() && this.bottleStatus.bottlesAmount > 0) {
                 let bottle = new ThrowableObject(this.character.x, this.character.y);
                 this.indexOfBottle++;
                 this.throwableObjects.push(bottle);
                 this.bottleStatus.bottlesAmount--;
                 this.lastThrowTime = new Date().getTime();
-                // this.lastThrow();
             } 
-        }
-        
+        }    
     }
 
 
@@ -272,7 +257,6 @@ class World {
     removeBottlesFromMap() {
         this.level.bottlePickUp.forEach((bottle, index) => {
            if(this.character.isColliding(bottle) && this.bottleStatus.bottlesAmount < 5) {
-               console.log('Character is colliding with bottle ' + index);
                this.level.bottlePickUp.splice(index, 1);
                this.bottleStatus.bottlesAmount++; 
            }

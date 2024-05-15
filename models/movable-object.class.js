@@ -7,7 +7,9 @@ class MovableObject extends DrawableObject {
     energy = 100;
     energyBoss = 100;
     lastHit = 0;
+    lastHitEndboss = 0;
     timepassed = 0;
+    timepassedEndboss = 0;
     
 
     applyGravity() {
@@ -48,11 +50,6 @@ class MovableObject extends DrawableObject {
         this.x -= 250;
     }
 
-
-    // isNearEndboss() {
-    //     return this.character.x;
-    // }
-
     
     playAnimation(images) {
         let i = this.currentImage % images.length;
@@ -71,7 +68,7 @@ class MovableObject extends DrawableObject {
 
 
     isHitNormalChicken() {
-        if(this.timepassed > 1.5) {
+        if(this.timepassed > 1) {
             this.energy -= 20;
             if(this.energy <= 0) {
                 this.energy = 0;
@@ -84,7 +81,7 @@ class MovableObject extends DrawableObject {
 
 
     isHitSmallChicken() {
-        if(this.timepassed > 1.5) {
+        if(this.timepassed > 1) {
             this.energy -= 10;
             if(this.energy <= 0) {
                 this.energy = 0;
@@ -97,7 +94,7 @@ class MovableObject extends DrawableObject {
 
 
     isHitEndboss() {
-        if(this.timepassed > 1.5 && world.movableObject.energyBoss > 0) {
+        if(this.timepassed > 1 && world.movableObject.energyBoss > 0) {
             this.energy -= 33.34;
             if(this.energy <= 0) {
                 this.energy = 0;
@@ -114,33 +111,27 @@ class MovableObject extends DrawableObject {
         if(this.energyBoss <= 0) {
             this.energyBoss = 0;
             this.isDeadBoss();
+        } else {
+            this.lastHitEndboss = new Date().getTime();
+            return this.lastHitEndboss;
         }
-        return this.energyBoss
+        // return this.energyBoss
     }
 
-
-
-    // isHurt() {
-    //     let timepassed = new Date().getTime() - this.lastHit;
-    //     timepassed = timepassed / 1000;
-    //     return timepassed < 1.5;
-    // }
     
     isHurt() {
         this.timepassed = new Date().getTime() - this.lastHit;
         this.timepassed = this.timepassed / 1000;
-        return this.timepassed < 1.5;
+        return this.timepassed < 1;
     }
 
+    // work in progress
     isHurtEndboss() {
-        return this.timepassed > 0.4 && world.movableObject.energyBoss > 0;
+        this.timepassedEndboss = new Date().getTime() - this.lastHitEndboss;
+        this.timepassedEndboss = this.timepassedEndboss / 1000;
+        return this.timepassedEndboss < 0.5;
     }
 
-
-    // isHurtBoss() {
-        
-    // }
-    
 
     isDead() {
         return this.energy == 0;

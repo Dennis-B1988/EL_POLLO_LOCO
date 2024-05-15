@@ -102,6 +102,12 @@ class Character extends MovableObject {
         setInterval(() => {
             if(this.isDead()) {
                 this.playAnimation(this.IMAGES_DEAD);
+                document.querySelector('.game-lost').classList.remove('none');
+                setTimeout(() => {
+                    
+                    clearAllIntervals();
+                    // restartGame();
+                }, 3000);
             } else if (this.isHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else {
@@ -154,7 +160,7 @@ class Character extends MovableObject {
 
 
     characterHitByEndboss(){
-        if(world.movableObject.energyBoss > 0) {
+        if(world.movableObject.energyBoss > 0 && !this.isDead()) {
             this.knockback();
         }
     }

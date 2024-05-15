@@ -3,6 +3,9 @@ let world;
 let keyboard = new Keyboard();
 
 function init(){
+    clearAllIntervals();
+    document.querySelector('.game-won').classList.add('none');
+    document.querySelector('.game-lost').classList.add('none');
     initLevel();
     startGame();
     canvas = document.getElementById("canvas");
