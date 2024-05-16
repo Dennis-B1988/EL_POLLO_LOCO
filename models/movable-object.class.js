@@ -113,9 +113,8 @@ class MovableObject extends DrawableObject {
             this.isDeadBoss();
         } else {
             this.lastHitEndboss = new Date().getTime();
-            return this.lastHitEndboss;
+            this.isHurtEndboss();
         }
-        // return this.energyBoss
     }
 
     
@@ -135,7 +134,6 @@ class MovableObject extends DrawableObject {
 
     isDead() {
         return this.energy == 0;
-        // this.characterIsDead = true;
     }
 
 

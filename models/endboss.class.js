@@ -56,6 +56,7 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
+        this.speed = 20;
         this.animate();
     }
 
@@ -85,13 +86,14 @@ class Endboss extends MovableObject {
                 this.playAnimation(this.IMAGES_ALERT);
             } else if(this.isHurtEndboss()){
                 this.playAnimation(this.IMAGES_HURT);
-            } else if(this.x - world.character.x < 100) {
+            } else if(this.x - world.character.x < 99) {
                 this.playAnimation(this.IMAGES_ATTACK);
-            } else {
+            } else if(this.bossAlerted == true && !this.isHurtEndboss() && world.movableObject.energyBoss !== 0) {
+                // this.moveLeft();
                 this.playAnimation(this.IMAGES_WALKING);
             }
             i++;
-            if(world.character.x > 2000 && !this.bossAlerted) {
+            if(world.character.x > 3750 && !this.bossAlerted) {
                 this.bossAlerted = true;
                 i = 0;
             }

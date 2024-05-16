@@ -16,7 +16,17 @@ class World {
     timeBetweenThrows = new Date().getTime();
     indexOfBottle = 0;
     movableObject = new MovableObject();
+    bottleThrow = new ThrowableObject();
+
+    walking_sound = new Audio('./assets/audio/character/walk.wav');
+    hit_sound = new Audio('./assets/audio/character/hit.mp3');
+    jump_sound = new Audio('./assets/audio/character/jump.mp3');
+    dead_sound = new Audio('./assets/audio/character/death.mp3');
+    snoring_sound = new Audio('./assets/audio/character/snoring.mp3');
+    sound_bottle_break = new Audio('./assets/audio/bottle/bottle-break.mp3');
     
+    soundOn = true;
+
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -32,6 +42,7 @@ class World {
         this.ctx.fillStyle = '#9A3E00';
         
     }
+
 
 
     draw () {
@@ -70,7 +81,16 @@ class World {
 
     setWorld() {
         this.character.world = this;
+    }
 
+
+    stopSounds() {
+        this.soundOn = false;
+        this.walking_sound.pause(),
+        // this.jump_sound.pause(),
+        this.hit_sound.pause(),
+        this.dead_sound.pause(),
+        this.snoring_sound.pause()
     }
 
 
@@ -107,7 +127,7 @@ class World {
 
     checkCollisionsNormalChicken() {
         this.level.normalChicken.forEach((enemy) => {
-            if(this.character.isColliding(enemy) && this.character.y > 200) {
+            if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
                 this.character.isHitNormalChicken();
                 this.statusBar.setPercentage(this.character.energy);
             }
@@ -117,7 +137,7 @@ class World {
 
     checkCollisionsSmallChicken() {
         this.level.smallChicken.forEach((enemy) => {
-            if(this.character.isColliding(enemy) && this.character.y > 200) {
+            if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
                 this.character.isHitSmallChicken();
                 this.statusBar.setPercentage(this.character.energy);
             }
@@ -146,8 +166,17 @@ class World {
 
     bottleHitsGround() {
         this.throwableObjects.forEach((bottle, index) => {
-            if(bottle.y === 512) {
-                this.throwableObjects.splice(index, 1);
+            if(bottle.y >= 420) {
+                console.log('bottle hits ground');
+                this.sound_bottle_break.play();
+                bottle.y += 0;
+                bottle.speedY = 0;
+                setTimeout(() => {
+                    this.throwableObjects.splice(index, 1);
+                    this.sound_bottle_break.pause();
+                    this.sound_bottle_break.currentTime = 0;
+                }, 100)
+                
             }
         })
     }
@@ -156,13 +185,10 @@ class World {
     killNormalChicken(){
         this.level.normalChicken.forEach((enemy, enemyIndex) => {
             if(this.character.isColliding(enemy) && this.character.y < 200) {
-                this.level.normalChicken.splice(enemyIndex, 1);
+                this.normalChickenDead(enemy, enemyIndex);
             }
             if(this.throwableObjects.length > 0) {
-                // this.normalEnemy.chickenDead();
-                this.bottleNormalChicken(enemy, enemyIndex);
-                    
-
+                this.bottleNormalChicken(enemy);
             }
         })
     }
@@ -171,17 +197,30 @@ class World {
     bottleNormalChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.level.normalChicken.splice(enemyIndex, 1);
+                this.sound_bottle_break.play();
+                this.normalChickenDead(enemy, enemyIndex);
                 this.throwableObjects.splice(bottleIndex, 1);
+                setTimeout(() => {
+                    this.sound_bottle_break.pause();
+                    this.sound_bottle_break.currentTime = 0;
+                }, 1000);
             }
         });
     }
 
 
+    normalChickenDead(enemy, enemyIndex) {
+        enemy.energy = 0;
+        setTimeout(() => {
+            this.level.normalChicken.splice(enemyIndex, 1);
+        }, 500);
+    }
+
+
     killSmallChicken(){
         this.level.smallChicken.forEach((enemy, enemyIndex) => {
-            if(this.character.isColliding(enemy) && this.character.y < 200) {
-                this.level.smallChicken.splice(enemyIndex, 1);
+            if(this.character.isColliding(enemy) && this.character.y < 220) {
+                this.smallChickenDead(enemy, enemyIndex)
             }
             if(this.throwableObjects.length > 0) {
                 this.bottleSmallChicken(enemy, enemyIndex);
@@ -193,10 +232,25 @@ class World {
     bottleSmallChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.level.smallChicken.splice(enemyIndex, 1);
+                this.sound_bottle_break.play();
+                this.smallChickenDead(enemy, enemyIndex);
                 this.throwableObjects.splice(bottleIndex, 1);
+                setTimeout(() => {
+                    this.sound_bottle_break.pause();
+                    this.sound_bottle_break.currentTime = 0;
+                }, 1000);
+                
+                
             } 
         });
+    }
+
+
+    smallChickenDead(enemy, enemyIndex) {
+        enemy.energy = 0;
+        setTimeout(() => {
+            this.level.smallChicken.splice(enemyIndex, 1);
+        }, 500);
     }
 
 
@@ -212,9 +266,14 @@ class World {
     bottleEndboss(enemy){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.throwableObjects.splice(bottleIndex, 1);
+                this.sound_bottle_break.play();
+                this.throwableObjects.splice(bottleIndex, 1); 
                 this.movableObject.hittingEndbossWithBottle();
                 this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
+                setTimeout(() => {
+                    this.sound_bottle_break.pause();
+                    this.sound_bottle_break.currentTime = 0; 
+                }, 1000);
             }
         });
     }
@@ -236,7 +295,7 @@ class World {
     lastThrow(){
         this.timeBetweenThrows = new Date().getTime() - this.lastThrowTime;
         this.timeBetweenThrows = this.timeBetweenThrows / 1000;
-        return this.timeBetweenThrows > 0.5;
+        return this.timeBetweenThrows > 1;
     }
 
 
@@ -309,11 +368,7 @@ class World {
         if(mo.otherDirection){
             this.flipImage(mo);
         }
-
         mo.draw(this.ctx);
-        // mo.drawFrame(this.ctx);
-        mo.drawActualFrame(this.ctx)
-
         if(mo.otherDirection){
             this.flipImageBack(mo);
         }
@@ -332,5 +387,12 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+    
 
+    gameLost(){
+        document.querySelector('.game-lost').classList.remove('none');
+        setTimeout(() => {
+            clearAllIntervals();
+        }, 3000);
+    }
 }

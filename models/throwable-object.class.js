@@ -5,6 +5,14 @@ class ThrowableObject extends MovableObject {
         './assets/img/6_salsa_bottle/bottle_rotation/3_bottle_rotation.png',
         './assets/img/6_salsa_bottle/bottle_rotation/4_bottle_rotation.png',
     ];
+    IMAGES_SPLASH = [
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/1_bottle_splash.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/2_bottle_splash.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/3_bottle_splash.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/4_bottle_splash.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/5_bottle_splash.png',
+        './assets/img/6_salsa_bottle/bottle_rotation/bottle_splash/6_bottle_splash.png',
+    ];
     offset = {
         top: 5,
         bottom: 5,
@@ -12,26 +20,56 @@ class ThrowableObject extends MovableObject {
         right: 20
     };
 
+
+    /**
+     * Constructor function for creating a ThrowableObject at a specified position.
+     *
+     * @param {number} x - The x-coordinate position of the object.
+     * @param {number} y - The y-coordinate position of the object.
+     * @return {void} No return value
+     */
     constructor(x, y) {
-        super().loadImage('./assets/img/6_salsa_bottle/bottle_rotation/1_bottle_rotation.png');
+        super().loadImage(this.IMAGES_THROWING[0]);
+        this.loadImages(this.IMAGES_THROWING);
+        this.loadImages(this.IMAGES_SPLASH);
         this.x = x;
         this.y = y;
         this.height = 75;
         this.width = 75;
-        // this.loadImages(this.IMAGES_THROWING);
         this.throw();
+        this.animate();
     }
 
 
+    animate() {
+        setInterval(() => { 
+
+            if(this.y >= 420) {
+                
+                
+                this.playAnimation(this.IMAGES_SPLASH);
+            } else {
+                this.playAnimation(this.IMAGES_THROWING);
+            }
+        }, 1000 / 60);
+    }
+
+
+    /**
+     * Set the initial speed, apply gravity, and move the object based on its position.
+     *
+     * @return {void} No return value
+     */
     throw(){
-            this.speedY = 0;
-            this.applyGravity();
-            setInterval(() => {
+        this.speedY = 0;
+        this.applyGravity();
+        setInterval(() => {
+            if(this.y < 420){
                 this.x += 35;
-            }, 25)
-        } 
-
-
-    
-    
+            } else {
+                this.x += 0;
+                this.y += 0;
+            }
+        }, 25)
+    } 
 }
