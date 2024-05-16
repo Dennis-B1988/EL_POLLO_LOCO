@@ -18,6 +18,7 @@ class World {
     movableObject = new MovableObject();
     bottleThrow = new ThrowableObject();
 
+    background_sound = new Audio('./assets/audio/background/music.mp3');
     walking_sound = new Audio('./assets/audio/character/walk.wav');
     hit_sound = new Audio('./assets/audio/character/hit.mp3');
     jump_sound = new Audio('./assets/audio/character/jump.mp3');
@@ -25,7 +26,7 @@ class World {
     snoring_sound = new Audio('./assets/audio/character/snoring.mp3');
     sound_bottle_break = new Audio('./assets/audio/bottle/bottle-break.mp3');
     
-    soundOn = true;
+    
 
 
     constructor(canvas, keyboard) {
@@ -85,12 +86,45 @@ class World {
 
 
     stopSounds() {
-        this.soundOn = false;
+        soundOn = false;
+        this.background_sound.pause(),
         this.walking_sound.pause(),
-        // this.jump_sound.pause(),
+        this.jump_sound.pause(),
         this.hit_sound.pause(),
         this.dead_sound.pause(),
         this.snoring_sound.pause()
+    }
+
+
+    resumeSounds() {
+        soundOn = true;
+        this.background_sound.play()
+    }
+
+
+    backgroundSounds() {
+        this.background_sound.pause()
+    }
+
+
+    characterSounds(){
+        this.walking_sound.pause(),
+        this.jump_sound.pause(),
+        this.hit_sound.pause(),
+        this.dead_sound.pause(),
+        this.snoring_sound.pause()
+    }
+
+
+    enemySounds(){
+
+    }
+
+
+    backgroundMusic(){
+        this.background_sound.play();
+        this.background_sound.loop = true;
+        this.background_sound.volume = 0.2;
     }
 
 
@@ -315,7 +349,7 @@ class World {
 
     removeBottlesFromMap() {
         this.level.bottlePickUp.forEach((bottle, index) => {
-           if(this.character.isColliding(bottle) && this.bottleStatus.bottlesAmount < 5) {
+           if(this.character.isColliding(bottle) && this.bottleStatus.bottlesAmount < 10) {
                this.level.bottlePickUp.splice(index, 1);
                this.bottleStatus.bottlesAmount++; 
            }
@@ -324,7 +358,7 @@ class World {
 
 
     maximumBottles() {
-        if(this.bottleStatus.bottlesAmount === 5) {
+        if(this.bottleStatus.bottlesAmount === 10) {
             this.ctx.fillStyle = 'red';
             this.ctx.fillText(this.bottleStatus.bottlesAmount, 65, 103);
         } else {
@@ -387,12 +421,29 @@ class World {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
+
+
+    gameWon(){
+        document.querySelector('.game-won').classList.remove('none');
+        if(world.coinStatus.coinsAmount === 35){
+            document.querySelector('.won').classList.add('none');
+            document.querySelector('.won-all-coins').classList.remove('none');
+        } else {
+            document.querySelector('.won').classList.remove('none');
+            document.querySelector('.won-all-coins').classList.add('none');
+        }
+        setTimeout(() => {
+            clearAllIntervals();
+            this.backgroundSounds();
+        }, 3000);
+    }
     
 
     gameLost(){
         document.querySelector('.game-lost').classList.remove('none');
         setTimeout(() => {
             clearAllIntervals();
+            this.backgroundSounds();
         }, 3000);
     }
 }

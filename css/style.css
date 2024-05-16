@@ -197,7 +197,7 @@ button {
   width: 100%;
   position: relative;
   z-index: 40;
-  background-image: url('./assets/img/5_background/layers/air.png');
+  background-image: url('../assets/img/5_background/layers/air.png');
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid black;
@@ -216,6 +216,7 @@ button {
 
 .impressum h1 {
   font-size: 42px;
+  margin-top: 10px;
 }
 
 .ln-top {
@@ -228,7 +229,7 @@ button {
   width: 100%;
   position: relative;
   z-index: 50;
-  background-image: url('./assets/img/5_background/layers/air.png');
+  background-image: url('../assets/img/5_background/layers/air.png');
   background-repeat: no-repeat;
   background-size: cover;
   border: 2px solid black;

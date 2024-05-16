@@ -1,7 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
-
+let soundOn = true;
 
 /**
  * Initializes the game by clearing intervals, setting initial game-won and game-lost elements to hidden, 
@@ -16,6 +16,7 @@ function init(){
     startGame();
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard); 
+    world.backgroundMusic();
 }
 
 
@@ -169,11 +170,31 @@ function restartGame() {
 
 
 /**
+ * Toggles the sound on the title screen based on the current state. If the sound is currently on, 
+ * it mutes the sound, otherwise, it turns the sound on.
+ *
+ */
+function toggleSoundTitleScreen() {
+    let sound = document.querySelector('.sound img');
+    let soundInGame = document.querySelector('.toggle-sound-game img');
+    if (sound.src.includes('sound.png') || soundInGame.src.includes('sound.png')) {
+        soundOn = false;
+        sound.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
+        soundInGame.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
+    } else {
+        soundOn = true;
+        sound.src = './assets/img/9_intro_outro_screens/start/sound.png';
+        soundInGame.src = './assets/img/9_intro_outro_screens/start/sound.png';
+    }
+}
+
+
+/**
  * Toggles the sound on and off based on the current state. If the sound is currently on, 
  * it mutes the sound, otherwise, it turns the sound on.
  * 
  */
-function toggleSound() {
+function toggleSoundInGame() {
     let sound = document.querySelector('.sound img');
     let soundInGame = document.querySelector('.toggle-sound-game img');
     if (sound.src.includes('sound.png') || soundInGame.src.includes('sound.png')) {
@@ -181,7 +202,7 @@ function toggleSound() {
         sound.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
         soundInGame.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
     } else {
-        world.soundOn = true;
+        world.resumeSounds();
         sound.src = './assets/img/9_intro_outro_screens/start/sound.png';
         soundInGame.src = './assets/img/9_intro_outro_screens/start/sound.png';
     }

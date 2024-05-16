@@ -47,7 +47,11 @@ class MovableObject extends DrawableObject {
 
 
     knockback() {
-        this.x -= 250;
+        if(world.character.x > 1500) {
+            this.x -= 250;
+        } else {
+            this.x -= 150;
+        }
     }
 
     
@@ -107,7 +111,7 @@ class MovableObject extends DrawableObject {
 
 
     hittingEndbossWithBottle(){
-        this.energyBoss -= 20;
+        this.energyBoss -= 10;
         if(this.energyBoss <= 0) {
             this.energyBoss = 0;
             this.isDeadBoss();

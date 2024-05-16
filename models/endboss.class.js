@@ -56,53 +56,56 @@ class Endboss extends MovableObject {
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
-        this.speed = 20;
+        this.speed = 50;
         this.animate();
     }
+    
 
     animate() {
         let i = 0;
-
+        this.bossDead();
         setInterval(() => {
-            if(world.movableObject.energyBoss === 0) {
-                this.playAnimation(this.IMAGES_DEAD);
-                document.querySelector('.game-won').classList.remove('none');
-                if(world.coinStatus.coinsAmount === 35){
-                    document.querySelector('.won').classList.add('none');
-                    document.querySelector('.won-all-coins').classList.remove('none');
-                } else {
-                    document.querySelector('.won').classList.remove('none');
-                    document.querySelector('.won-all-coins').classList.add('none');
-                }
-                setTimeout(() => {
-                    clearAllIntervals();
-                }, 3000);
-            }
-        }, 200);
-
-
-        setInterval(() => {
-            if(i < 10) {
-                this.playAnimation(this.IMAGES_ALERT);
-            } else if(this.isHurtEndboss()){
-                this.playAnimation(this.IMAGES_HURT);
-            } else if(this.x - world.character.x < 99) {
-                this.playAnimation(this.IMAGES_ATTACK);
-            } else if(this.bossAlerted == true && !this.isHurtEndboss() && world.movableObject.energyBoss !== 0) {
-                // this.moveLeft();
-                this.playAnimation(this.IMAGES_WALKING);
-            }
+            this.bossCurrentAnimation(i);
             i++;
             if(world.character.x > 3750 && !this.bossAlerted) {
                 this.bossAlerted = true;
                 i = 0;
             }
+            this.stopMoving();
         }, 300);
-    
+    }
 
-    
+
+    bossCurrentAnimation(i){
+        if(i < 10) {
+            this.playAnimation(this.IMAGES_ALERT);
+        } else if(this.isHurtEndboss()){
+            this.playAnimation(this.IMAGES_HURT);
+        } else if(this.x - world.character.x < 90) {
+            this.moveLeft();
+            this.playAnimation(this.IMAGES_ATTACK);
+        } else if(this.bossAlerted == true && !this.isHurtEndboss() && world.movableObject.energyBoss !== 0) {
+            this.moveLeft();
+            this.playAnimation(this.IMAGES_WALKING);
+        }
+    }
+
+
+    bossDead(){
+        setInterval(() => {
+            if(world.movableObject.energyBoss === 0) {
+                this.playAnimation(this.IMAGES_DEAD);
+                world.gameWon();
+            }
+        }, 200);
     }
     
+
+    stopMoving() {
+        if(world.character.isDead()) {
+            this.speed = 0;
+        }
+    }
 
 
 }

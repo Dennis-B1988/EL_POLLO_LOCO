@@ -29,7 +29,7 @@
     <script src="./js/start-screen.js"></script>
     <script src="./js/game.js"></script>
   </head>
-  <body onload="init()">
+  <body>
     <h1 class="title">El Pollo Loco</h1>
 
     <section class="game-screen">
@@ -56,7 +56,11 @@
         </div>
 
         <div class="toggle-sound-game">
-          <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
+          <img
+            src="./assets/img/9_intro_outro_screens/start/sound.png"
+            alt="sound mute"
+            onclick="toggleSoundInGame()"
+          />
         </div>
         <div class="control-buttons-left">
           <button id="left" class="left">
@@ -89,7 +93,11 @@
               <img src="./assets/img/9_intro_outro_screens/start/controller.png" alt="controls" />
             </div>
             <div class="sound">
-              <img src="./assets/img/9_intro_outro_screens/start/sound.png" alt="sound mute" onclick="toggleSound()" />
+              <img
+                src="./assets/img/9_intro_outro_screens/start/sound.png"
+                alt="sound mute"
+                onclick="toggleSoundTitleScreen()"
+              />
             </div>
           </div>
         </div>
@@ -142,10 +150,10 @@
           <a href="https://pixabay.com/">Pixabay</a>
           <br />
           <br />
-          <a target="_blank" href="https://icons8.com/"></a> Icons von
-          <a target="_blank" href="https://icons8.com">Icons8</a>
-          <br />
+          Icons von <a target="_blank" href="https://icons8.com">Icons8</a> und
           <a href="https://www.flaticon.com/free-icons/telephone" title="telephone icons">Flaticon</a>
+          <br />
+          Sounds von <a target="_blank" href="https://freesound.org/">freesound</a>
         </div>
       </div>
 

@@ -200,7 +200,7 @@ class Character extends MovableObject {
 
 
     playWalkingSound(){
-        if(this.world.soundOn && !this.isAboveGround()) {
+        if(soundOn && !this.isAboveGround()) {
             this.world.walking_sound.play();
             this.world.snoring_sound.pause();
         }
@@ -208,7 +208,7 @@ class Character extends MovableObject {
 
 
     playJumpingSound(){
-        if(this.world.soundOn){
+        if(soundOn){
             this.world.jump_sound.play();
             this.world.snoring_sound.pause();
         }
@@ -216,14 +216,14 @@ class Character extends MovableObject {
 
 
     playSnoringSound(){
-        if(this.world.soundOn){
+        if(soundOn){
             this.world.snoring_sound.play();
         }
     }
 
 
     playHurtSound(){
-        if(this.world.soundOn){
+        if(soundOn){
             this.world.hit_sound.play();
             this.world.snoring_sound.pause();
         }
@@ -231,7 +231,7 @@ class Character extends MovableObject {
 
 
     playDeadSound(){
-        if(this.world.soundOn){
+        if(soundOn){
             this.world.dead_sound.play();
             this.world.snoring_sound.pause();
         }
