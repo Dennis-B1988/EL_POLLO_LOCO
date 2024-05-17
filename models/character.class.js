@@ -110,10 +110,9 @@ class Character extends MovableObject {
     deadHurtMove(){
         setInterval(() => {
             if(this.isDead()) {
-                this.world.audio.playDeadSound();
-                this.playAnimation(this.IMAGES_DEAD);
-                this.world.gameLost();
+                this.characterDead();
             } else if (this.isHurt()) {
+                this.lastIdleTime = new Date().getTime();
                 this.world.audio.playHurtSound();
                 this.playAnimation(this.IMAGES_HURT);
             } else {
@@ -234,6 +233,7 @@ class Character extends MovableObject {
      */
     characterHitByEndboss(){
         if(world.endboss.energyBoss > 0 && !this.isDead()) {
+            this.lastIdleTime = new Date().getTime();
             this.knockback();
         }
     }
@@ -249,6 +249,19 @@ class Character extends MovableObject {
         if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_IDLE);
         }
+    }
+
+
+    /**
+     * Handles the character's death by playing dead sound, showing dead animation, and triggering game loss.
+     *
+     * @param None
+     * @return None
+     */
+    characterDead(){
+        this.world.audio.playDeadSound();
+        this.playAnimation(this.IMAGES_DEAD);
+        this.world.gameLost();
     }
 
 
