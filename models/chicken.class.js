@@ -18,6 +18,13 @@ class Chicken extends MovableObject {
     };
 
 
+    /**
+     * Constructor function for initializing a Chicken object with the specified id and x-coordinate.
+     *
+     * @param {number} id - The unique identifier of the chicken.
+     * @param {number} x - The x-coordinate position of the chicken.
+     * @return {void} No return value
+     */
     constructor(id, x) {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -29,6 +36,12 @@ class Chicken extends MovableObject {
     }
 
 
+    /**
+     * Function that handles the animations of the chicken object based on its life state.
+     *
+     * @param None
+     * @return None
+     */
     animate() {
         setInterval(() => {
             if(this.isDead()) {
@@ -37,10 +50,21 @@ class Chicken extends MovableObject {
         }, 300);
 
         setInterval(() => {
-            if(!this.isDead()) {
-                // this.moveLeft();
-            this.playAnimation(this.IMAGES_WALKING);
-            }
+            this.walking();
         }, 100);
+    }
+
+
+    /**
+     * Function that handles the walking behavior of the chicken object when it's not dead.
+     *
+     * @param None
+     * @return None
+     */
+    walking(){
+        if(!this.isDead()) {
+            this.moveLeft();
+            this.playAnimation(this.IMAGES_WALKING);
+        }
     }
 }

@@ -14,10 +14,12 @@ class Sounds {
     characterDead = false;
 
 
-    constructor() {
-    }
-
-
+    /**
+     * Stops all sounds, pauses the bottle break sound, and manages enemy sounds.
+     *
+     * @param None
+     * @return None
+     */
     stopSounds() {
         soundOn = false;
         this.backgroundSounds();
@@ -27,18 +29,34 @@ class Sounds {
     }
 
 
+    /**
+     * Resumes playing the background sound.
+     *
+     */
     resumeSounds() {
         soundOn = true;
         this.background_sound.play();
     }
 
 
+    /**
+     * Pauses the background sound and the endboss sound.
+     *
+     * @param None
+     * @return None
+     */
     backgroundSounds() {
         this.background_sound.pause();
         this.endboss_sound.pause();
     }
 
 
+    /**
+     * Pauses all character sounds including walking, jumping, hitting, death, and snoring sounds.
+     *
+     * @param None
+     * @return None
+     */
     characterSounds(){
         this.walking_sound.pause();
         this.jump_sound.pause();
@@ -48,6 +66,12 @@ class Sounds {
     }
 
 
+    /**
+     * Pauses all enemy-related sounds including enemy_hit, endboss, endboss_alerted, endboss_hurt, and endboss_dead sounds.
+     *
+     * @param None
+     * @return None
+     */
     enemySounds(){
         this.enemy_hit_sound.pause();
         this.endboss_sound.pause();
@@ -57,13 +81,25 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the background music, sets it to loop, and adjusts the volume.
+     *
+     */
     backgroundMusic(){
-        this.background_sound.play();
-        this.background_sound.loop = true;
-        this.background_sound.volume = 0.2;
+        if(soundOn){
+            this.background_sound.play();
+            this.background_sound.loop = true;
+            this.background_sound.volume = 0.4;
+        }
     }
 
 
+    /**
+     * Plays the walking sound if sound is on and the character is not above ground.
+     *
+     * @param None
+     * @return None
+     */
     playWalkingSound(){
         if(soundOn && !world.character.isAboveGround()) {
             this.walking_sound.play();
@@ -72,6 +108,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the jumping sound if sound is on, and pauses the snoring sound.
+     *
+     * @param None
+     * @return None
+     */
     playJumpingSound(){
         if(soundOn){
             this.jump_sound.play();
@@ -80,6 +122,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the snoring sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playSnoringSound(){
         if(soundOn){
             this.snoring_sound.play();
@@ -87,6 +135,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the hurt sound if sound is on and pauses the snoring sound.
+     *
+     * @param None
+     * @return None
+     */
     playHurtSound(){
         if(soundOn){
             this.hit_sound.play();
@@ -95,6 +149,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the dead sound if sound is on and the character is not dead. Pauses the snoring sound and sets characterDead to true.
+     *
+     * @param None
+     * @return None
+     */
     playDeadSound(){
         if(soundOn && this.characterDead == false){
             this.dead_sound.play();
@@ -104,6 +164,12 @@ class Sounds {
     }
 
     
+    /**
+     * Plays the normal enemy hit sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playNormalEnemyHitSound(){
         if(soundOn){
             this.enemy_hit_sound.play();
@@ -111,6 +177,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the bottle shatter sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playBottleShatterSound(){
         if(soundOn){
             this.sound_bottle_break.play();
@@ -118,16 +190,28 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the endboss sound if sound is on. Pauses the background sound, plays the endboss sound, sets it to loop, and adjusts the volume.
+     *
+     * @param None
+     * @return None
+     */
     playEndbossSound(){
         if(soundOn){
             this.background_sound.pause();
             this.endboss_sound.play();
             this.endboss_sound.loop = true;
-            this.endboss_sound.volume = 0.2;
+            this.endboss_sound.volume = 0.4;
         }
     }
 
 
+    /**
+     * Plays the endboss alerted sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playEndbossAlertedSound(){
         if(soundOn){
             this.endboss_alerted_sound.play();
@@ -135,6 +219,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the endboss hurt sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playEndbossHurtSound(){
         if(soundOn){
             this.endboss_hurt.play();
@@ -142,6 +232,12 @@ class Sounds {
     }
 
 
+    /**
+     * Plays the endboss dead sound if sound is on.
+     *
+     * @param None
+     * @return None
+     */
     playEndbossDeadSound(){
         if(soundOn){
             this.endboss_dead.play();

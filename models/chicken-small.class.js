@@ -18,6 +18,13 @@ class SmallChicken extends MovableObject {
     };
 
 
+    /**
+     * Constructor function for initializing a SmallChicken object with the specified id and x-coordinate.
+     *
+     * @param {number} id - The unique identifier of the SmallChicken.
+     * @param {number} x - The x-coordinate position of the SmallChicken.
+     * @return {void} No return value
+     */
     constructor(id, x) {
         super().loadImage('./assets/img/3_enemies_chicken/chicken_normal/1_walk/1_w.png');
         this.loadImages(this.IMAGES_WALKING);
@@ -25,10 +32,16 @@ class SmallChicken extends MovableObject {
         this.id = id;
         this.x = x;
         this.speed = 0.15 + Math.random() * 0.25;
-
         this.animate();
     }
 
+
+    /**
+     * Function that handles the animations of the chicken object based on its life state.
+     *
+     * @param None
+     * @return None
+     */
     animate() { 
         setInterval(() => {
             if(this.isDead()) {
@@ -37,11 +50,22 @@ class SmallChicken extends MovableObject {
         }, 300);
 
         setInterval(() => {
-            if(!this.isDead()) {
-                // this.moveLeft();
-            this.playAnimation(this.IMAGES_WALKING);
-            }
+            this.walking();
         }, 100);
+    }
+
+
+    /**
+     * Handles the walking movement of the chicken object if it is not dead.
+     *
+     * @param None
+     * @return None
+     */
+    walking(){
+        if(!this.isDead()) {
+            this.moveLeft();
+            this.playAnimation(this.IMAGES_WALKING);
+        }
     }
 
 }

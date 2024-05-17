@@ -233,7 +233,7 @@ class Character extends MovableObject {
      * @return None
      */
     characterHitByEndboss(){
-        if(this.world.movableObject.energyBoss > 0 && !this.isDead()) {
+        if(world.endboss.energyBoss > 0 && !this.isDead()) {
             this.knockback();
         }
     }

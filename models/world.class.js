@@ -18,8 +18,9 @@ class World {
     movableObject = new MovableObject();
     bottleThrow = new ThrowableObject();
     audio = new Sounds();
-
-
+    damage = new Damage();
+    
+    
     /**
      * Constructor function for initializing the World object with the canvas and keyboard.
      *
@@ -34,11 +35,12 @@ class World {
         this.draw();
         this.setWorld();
         this.run();
-        this.collition();
-        this.collitionDamageToEnemy();
+        this.damage.collition();
+        this.damage.collitionDamageToEnemy();
         this.collect();
         this.ctx.font = '48px Zabras';
         this.ctx.fillStyle = '#9A3E00';   
+        // this.movableObject = new MovableObject();
     }
 
 
@@ -123,34 +125,6 @@ class World {
 
 
     /**
-     * Sets up a recurring interval to check collisions with normal, small, and endboss chickens.
-     *
-     * @param None
-     * @return None
-     */
-    collition() {
-        setInterval(() => {
-            this.checkCollisionsNormalChicken();
-            this.checkCollisionsSmallChicken();
-            this.checkCollisionsEndboss();
-        }, 100);
-    }
-
-
-    /**
-     * Sets up a recurring interval to check damage collisions with enemies.
-     *
-     * @param None
-     * @return None
-     */
-    collitionDamageToEnemy() {
-        setInterval(() => {
-            this.checkDamageToEnemyCollisions();
-        }, 25);
-    }
-
-
-    /**
      * Sets up a recurring interval to collect items by removing bottles and coins from the map.
      *
      * @param None
@@ -161,250 +135,6 @@ class World {
             this.removeBottlesFromMap();
             this.removeCoinsFromMap();
         }, 50);
-    }
-
-
-    /**
-     * Loops through normal chickens in the level, checks collision with character, 
-     * and performs actions accordingly.
-     *
-     * @param None
-     * @return None
-     */
-    checkCollisionsNormalChicken() {
-        this.level.normalChicken.forEach((enemy) => {
-            if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
-                this.character.isHitNormalChicken();
-                this.statusBar.setPercentage(this.character.energy);
-            }
-        })       
-    }
-
-
-    /**
-     * Loops through small chickens in the level, checks collision with character, 
-     * and performs actions accordingly.
-     *
-     * @param None
-     * @return None
-     */
-    checkCollisionsSmallChicken() {
-        this.level.smallChicken.forEach((enemy) => {
-            if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
-                this.character.isHitSmallChicken();
-                this.statusBar.setPercentage(this.character.energy);
-            }
-        })       
-    }
-
-
-    /**
-     * Loops through endboss enemies in the level, checks collision with character, 
-     * and performs actions accordingly.
-     *
-     * @param None
-     * @return None
-     */
-    checkCollisionsEndboss() {
-        this.level.endboss.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
-                this.character.isHitEndboss();
-                this.statusBar.setPercentage(this.character.energy);
-                this.character.characterHitByEndboss();
-            }
-        })       
-    }
-
-
-    /**
-     * A function that checks collision with enemies and performs appropriate actions.
-     *
-     * @param None
-     * @return None
-     */
-    checkDamageToEnemyCollisions() {
-        this.bottleHitsGround();
-        this.killNormalChicken();
-        this.killSmallChicken();
-        this.killEndboss();
-    }
-
-
-    /**
-     * A function that handles bottles hitting the ground, triggers sound effects, 
-     * and removes the bottle from the throwable objects array if it hits the ground.
-     *
-     * @param None
-     * @return None
-     */
-    bottleHitsGround() {
-        this.throwableObjects.forEach((bottle, index) => {
-            if(bottle.y >= 420) {
-                this.audio.playBottleShatterSound();
-                bottle.y += 0;
-                bottle.speedY = 0;
-                setTimeout(() => {
-                    this.throwableObjects.splice(index, 1);
-                    this.audio.sound_bottle_break.pause();
-                    this.audio.sound_bottle_break.currentTime = 0;
-                }, 100) 
-            }
-        })
-    }
-
-
-    /**
-     * Loops through normal chickens in the level, checks collision with character, 
-     * and performs actions accordingly.
-     *
-     * @param None
-     * @return None
-     */
-    killNormalChicken(){
-        this.level.normalChicken.forEach((enemy, enemyIndex) => {
-            if(this.character.isColliding(enemy) && this.character.y < 200) {
-                this.normalChickenDead(enemy, enemyIndex);
-            }
-            if(this.throwableObjects.length > 0) {
-                this.bottleNormalChicken(enemy);
-            }
-        })
-    }
-
-
-    /**
-     * Executes specific actions when the bottle hits a normal chicken,
-     * including playing sounds, handling collision, and removing the bottle.
-     *
-     * @param {Object} enemy - The normal chicken enemy object
-     * @param {number} enemyIndex - Index of the normal chicken in the array
-     * @return {undefined}
-     */
-    bottleNormalChicken(enemy, enemyIndex){
-        this.throwableObjects.forEach((bottle, bottleIndex) => {
-            if(bottle.isColliding(enemy)) {
-                this.audio.playBottleShatterSound();
-                this.normalChickenDead(enemy, enemyIndex);
-                this.throwableObjects.splice(bottleIndex, 1);
-                setTimeout(() => {
-                    this.audio.sound_bottle_break.pause();
-                    this.audio.sound_bottle_break.currentTime = 0;
-                }, 1000);
-            }
-        });
-    }
-
-
-    /**
-     * Handles the actions to be executed when a normal chicken enemy dies,
-     * including updating energy, playing hit sound, and removing the chicken after a delay.
-     *
-     * @param {Object} enemy - The normal chicken enemy that died
-     * @return {undefined}
-     */
-    normalChickenDead(enemy) {
-        enemy.energy = 0;
-        this.audio.playNormalEnemyHitSound();
-        setTimeout(() => {
-            this.level.normalChicken = this.level.normalChicken.filter(chicken => chicken.id !== enemy.id);
-        }, 500);
-    }
-
-
-    /**
-     * Loops through small chickens in the level, checks collision with character, 
-     * and performs actions accordingly.
-     *
-     * @param None
-     * @return None
-     */
-    killSmallChicken(){
-        this.level.smallChicken.forEach((enemy, enemyIndex) => {
-            if(this.character.isColliding(enemy) && this.character.y < 220) {
-                this.smallChickenDead(enemy, enemyIndex)
-            }
-            if(this.throwableObjects.length > 0) {
-                this.bottleSmallChicken(enemy, enemyIndex);
-            }
-        })
-    }
-    
-    
-    /**
-     * Executes specific actions when the bottle hits a small chicken, 
-     * including playing sounds, handling collision, and removing the bottle.
-     *
-     * @param {Object} enemy - The small chicken enemy object
-     * @param {number} enemyIndex - Index of the small chicken in the array
-     * @return {undefined}
-     */
-    bottleSmallChicken(enemy, enemyIndex){
-        this.throwableObjects.forEach((bottle, bottleIndex) => {
-            if(bottle.isColliding(enemy)) {
-                this.audio.playBottleShatterSound();
-                this.smallChickenDead(enemy, enemyIndex);
-                this.throwableObjects.splice(bottleIndex, 1);
-                setTimeout(() => {
-                    this.audio.sound_bottle_break.pause();
-                    this.audio.sound_bottle_break.currentTime = 0;
-                }, 1000);   
-            } 
-        });
-    }
-
-
-    /**
-     * Handles the actions to be executed when a small chicken enemy dies,
-     * including updating energy, playing hit sound, and removing the chicken after a delay.
-     *
-     * @param {Object} enemy - The small chicken enemy that died
-     * @return {undefined}
-     */
-    smallChickenDead(enemy) {
-        enemy.energy = 0;
-        this.audio.playNormalEnemyHitSound();
-        setTimeout(() => {
-            this.level.smallChicken = this.level.smallChicken.filter(chicken => chicken.id !== enemy.id);
-        }, 500);
-    }
-
-
-    /**
-     * Loops through the endboss enemies in the level and initiates bottleEndboss action 
-     * if there are throwableObjects available.
-     *
-     * @param None
-     * @return None
-     */
-    killEndboss(){
-        this.level.endboss.forEach((enemy) => {
-            if(this.throwableObjects.length > 0) {
-                this.bottleEndboss(enemy);
-            }
-        })
-    }
-
-
-    /**
-     * Loops through the throwableObjects to check bottle collision with the endboss enemy,
-     * plays sounds, updates boss percentage, and removes the bottle if collision occurs.
-     *
-     * @param {Object} enemy - The endboss enemy object
-     * @return {undefined}
-     */
-    bottleEndboss(enemy){
-        this.throwableObjects.forEach((bottle, bottleIndex) => {
-            if(bottle.isColliding(enemy)) {
-                this.audio.playBottleShatterSound();
-                this.movableObject.hittingEndbossWithBottle();
-                this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
-                this.throwableObjects.splice(bottleIndex, 1); 
-                setTimeout(() => {
-                    this.audio.sound_bottle_break.pause();
-                    this.audio.sound_bottle_break.currentTime = 0; 
-                }, 1000);
-            }
-        });
     }
 
 

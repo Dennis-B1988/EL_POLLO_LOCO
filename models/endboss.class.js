@@ -48,8 +48,16 @@ class Endboss extends MovableObject {
     };
     bossAlerted = false;
     bossIsDead = false;
+    energyBoss = 100;
+    lastHitEndboss = 0;
+    timepassedEndboss = 0;
 
 
+    /**
+     * Constructor function for initializing the Endboss object with initial images and animations.
+     *
+     * @return {void} No return value
+     */
     constructor() {
         super().loadImage(this.IMAGES_WALKING[0]);
         this.loadImages(this.IMAGES_WALKING);
@@ -62,6 +70,12 @@ class Endboss extends MovableObject {
     }
     
 
+    /**
+     * Function that animates the endboss behavior based on different conditions.
+     *
+     * @param None
+     * @return None
+     */
     animate() {
         let i = 0;
         this.bossDead();
@@ -78,25 +92,38 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Executes the current animation for the boss based on the provided index.
+     *
+     * @param {number} i - The index used to determine the current animation state
+     * @return {void} No return value
+     */
     bossCurrentAnimation(i){
         if(i < 10) {
             this.playAnimation(this.IMAGES_ALERT);
         } else if(this.isHurtEndboss()){
             this.playAnimation(this.IMAGES_HURT);
-            // world.audio.playEndbossHurtSound();
+            world.audio.playEndbossHurtSound();
         } else if(this.x - world.character.x < 90) {
             this.moveLeft();
             this.playAnimation(this.IMAGES_ATTACK);
-        } else if(this.bossAlerted == true && !this.isHurtEndboss() && world.movableObject.energyBoss !== 0) {
+        } else if(this.bossAlerted == true && !this.isHurtEndboss() && world.endboss.energyBoss !== 0) {
             this.moveLeft();
             this.playAnimation(this.IMAGES_WALKING);
         }
     }
 
 
+    /**
+     * Sets up a recurring interval to check if the endboss is dead, 
+     * plays corresponding animations and sounds, and triggers game win.
+     *
+     * @param {void} No parameters
+     * @return {void} No return value
+     */
     bossDead(){
         setInterval(() => {
-            if(world.movableObject.energyBoss === 0) {
+            if(world.endboss.energyBoss === 0) {
                 this.playAnimation(this.IMAGES_DEAD);
                 world.gameWon();
                 if(this.bossIsDead) return;
@@ -107,6 +134,12 @@ class Endboss extends MovableObject {
     }
     
 
+    /**
+     * Stops the movement of the endboss if the character is dead.
+     *
+     * @param {void} No parameters
+     * @return {void} No return value
+     */
     stopMoving() {
         if(world.character.isDead()) {
             this.speed = 0;
@@ -114,6 +147,12 @@ class Endboss extends MovableObject {
     }
 
 
+    /**
+     * Plays the endboss and endboss alerted sounds.
+     *
+     * @param None
+     * @return None
+     */
     endbossSounds() {
         world.audio.playEndbossSound();
         world.audio.playEndbossAlertedSound();
