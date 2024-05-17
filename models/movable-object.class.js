@@ -116,7 +116,7 @@ class MovableObject extends DrawableObject {
             this.energyBoss = 0;
             this.isDeadBoss();
         } else {
-            this.lastHitEndboss = new Date().getTime();
+            this.lastHitEndboss = Date.now();
             this.isHurtEndboss();
         }
     }
@@ -125,15 +125,21 @@ class MovableObject extends DrawableObject {
     isHurt() {
         this.timepassed = new Date().getTime() - this.lastHit;
         this.timepassed = this.timepassed / 1000;
+        console.log('Time since last hit: ', this.lastHit);
         return this.timepassed < 1;
     }
 
     // work in progress
     isHurtEndboss() {
+        const currentTime = Date.now();
+        // this.timepassedEndboss = (currentTime - this.lastHitEndboss) / 1000;
         this.timepassedEndboss = new Date().getTime() - this.lastHitEndboss;
         this.timepassedEndboss = this.timepassedEndboss / 1000;
+        // console.log('Time since last hit: ', this.lastHitEndboss);
+        // this.timepassedEndboss = this.timepassedEndboss / 1000;
         return this.timepassedEndboss < 0.5;
     }
+    
 
 
     isDead() {

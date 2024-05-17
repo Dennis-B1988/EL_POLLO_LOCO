@@ -16,7 +16,7 @@ function init(){
     startGame();
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard); 
-    world.backgroundMusic();
+    world.audio.backgroundMusic();
 }
 
 
@@ -198,11 +198,11 @@ function toggleSoundInGame() {
     let sound = document.querySelector('.sound img');
     let soundInGame = document.querySelector('.toggle-sound-game img');
     if (sound.src.includes('sound.png') || soundInGame.src.includes('sound.png')) {
-        world.stopSounds();
+        world.audio.stopSounds();
         sound.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
         soundInGame.src = './assets/img/9_intro_outro_screens/start/sound-mute.png';
     } else {
-        world.resumeSounds();
+        world.audio.resumeSounds();
         sound.src = './assets/img/9_intro_outro_screens/start/sound.png';
         soundInGame.src = './assets/img/9_intro_outro_screens/start/sound.png';
     }

@@ -1,7 +1,7 @@
 class World {
-
     character = new Character();
     normalEnemy = new Chicken();
+    endboss = new Endboss();
     level = level_1;
     canvas;
     ctx;
@@ -17,18 +17,16 @@ class World {
     indexOfBottle = 0;
     movableObject = new MovableObject();
     bottleThrow = new ThrowableObject();
-
-    background_sound = new Audio('./assets/audio/background/music.mp3');
-    walking_sound = new Audio('./assets/audio/character/walk.wav');
-    hit_sound = new Audio('./assets/audio/character/hit.mp3');
-    jump_sound = new Audio('./assets/audio/character/jump.mp3');
-    dead_sound = new Audio('./assets/audio/character/death.mp3');
-    snoring_sound = new Audio('./assets/audio/character/snoring.mp3');
-    sound_bottle_break = new Audio('./assets/audio/bottle/bottle-break.mp3');
-    
-    
+    audio = new Sounds();
 
 
+    /**
+     * Constructor function for initializing the World object with the canvas and keyboard.
+     *
+     * @param {Canvas} canvas - The canvas element to render the world on.
+     * @param {Keyboard} keyboard - The keyboard input for controlling the world.
+     * @return {void} No return value
+     */
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -40,94 +38,83 @@ class World {
         this.collitionDamageToEnemy();
         this.collect();
         this.ctx.font = '48px Zabras';
-        this.ctx.fillStyle = '#9A3E00';
-        
+        this.ctx.fillStyle = '#9A3E00';   
     }
 
 
-
+    /**
+     * Draws the game elements on the canvas, clears the canvas, draws background and items,
+     * status bars, characters, and translates the context. Uses requestAnimationFrame for smooth rendering.
+     *
+     * @return {void} No return value
+     */
     draw () {
         this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.drawBackgroundAndItems();
+        this.drawStatusBars();
+        this.drawCharacters();
+        this.addObjectsToMap(this.throwableObjects);
+        this.ctx.translate(-this.camera_x, 0);
+        requestAnimationFrame(this.draw.bind(this));
+    }
 
+
+    /**
+     * Draws the background and items on the canvas by translating the context and adding various objects.
+     */
+    drawBackgroundAndItems(){
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgroundObjects);
-
         this.addObjectsToMap(this.level.clouds);
         this.addBottlesToMap(this.level.bottlePickUp);
         this.addCoinsToMap(this.level.coinPickUp);
+    }
 
+
+    /**
+     * Draws the status bars on the canvas by translating the context and adding various status elements.
+     */
+    drawStatusBars(){
         this.ctx.translate(-this.camera_x, 0);
         this.addToMap(this.statusBar);
         this.addToMap(this.statusBarEndboss);
         this.addToMap(this.bottleStatus);
         this.addToMap(this.coinStatus);
-
         this.maximumBottles();
-
         this.coinsCurrentAmount();
         this.ctx.translate(this.camera_x, 0);
-        
+    }
+
+
+    /**
+     * Draws the characters on the canvas by adding them to the map.
+     *
+     */
+    drawCharacters(){
         this.addToMap(this.character);
         this.addObjectsToMap(this.level.normalChicken);
         this.addObjectsToMap(this.level.smallChicken);
         this.addObjectsToMap(this.level.endboss);
-        this.addObjectsToMap(this.throwableObjects);
-        
-        this.ctx.translate(-this.camera_x, 0);
-        
-
-        requestAnimationFrame(this.draw.bind(this));
     }
 
 
+    /**
+     * Sets the world property of the character to the current instance of the world.
+     *
+     * @param None
+     * @return None
+     */
     setWorld() {
         this.character.world = this;
     }
 
 
-    stopSounds() {
-        soundOn = false;
-        this.background_sound.pause(),
-        this.walking_sound.pause(),
-        this.jump_sound.pause(),
-        this.hit_sound.pause(),
-        this.dead_sound.pause(),
-        this.snoring_sound.pause()
-    }
-
-
-    resumeSounds() {
-        soundOn = true;
-        this.background_sound.play()
-    }
-
-
-    backgroundSounds() {
-        this.background_sound.pause()
-    }
-
-
-    characterSounds(){
-        this.walking_sound.pause(),
-        this.jump_sound.pause(),
-        this.hit_sound.pause(),
-        this.dead_sound.pause(),
-        this.snoring_sound.pause()
-    }
-
-
-    enemySounds(){
-
-    }
-
-
-    backgroundMusic(){
-        this.background_sound.play();
-        this.background_sound.loop = true;
-        this.background_sound.volume = 0.2;
-    }
-
-
+    /**
+     * Sets up a recurring interval to call the checkThrowableObjects method every 100 milliseconds.
+     *
+     * @param None
+     * @return None
+     */
     run() {
         setInterval(() => {
             this.checkThrowableObjects(); 
@@ -135,6 +122,12 @@ class World {
     }
 
 
+    /**
+     * Sets up a recurring interval to check collisions with normal, small, and endboss chickens.
+     *
+     * @param None
+     * @return None
+     */
     collition() {
         setInterval(() => {
             this.checkCollisionsNormalChicken();
@@ -144,6 +137,12 @@ class World {
     }
 
 
+    /**
+     * Sets up a recurring interval to check damage collisions with enemies.
+     *
+     * @param None
+     * @return None
+     */
     collitionDamageToEnemy() {
         setInterval(() => {
             this.checkDamageToEnemyCollisions();
@@ -151,6 +150,12 @@ class World {
     }
 
 
+    /**
+     * Sets up a recurring interval to collect items by removing bottles and coins from the map.
+     *
+     * @param None
+     * @return None
+     */
     collect() {
         setInterval(() => {
             this.removeBottlesFromMap();
@@ -159,6 +164,13 @@ class World {
     }
 
 
+    /**
+     * Loops through normal chickens in the level, checks collision with character, 
+     * and performs actions accordingly.
+     *
+     * @param None
+     * @return None
+     */
     checkCollisionsNormalChicken() {
         this.level.normalChicken.forEach((enemy) => {
             if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
@@ -169,6 +181,13 @@ class World {
     }
 
 
+    /**
+     * Loops through small chickens in the level, checks collision with character, 
+     * and performs actions accordingly.
+     *
+     * @param None
+     * @return None
+     */
     checkCollisionsSmallChicken() {
         this.level.smallChicken.forEach((enemy) => {
             if(this.character.isColliding(enemy) && this.character.y > 200 && !enemy.isDead()) {
@@ -179,6 +198,13 @@ class World {
     }
 
 
+    /**
+     * Loops through endboss enemies in the level, checks collision with character, 
+     * and performs actions accordingly.
+     *
+     * @param None
+     * @return None
+     */
     checkCollisionsEndboss() {
         this.level.endboss.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
@@ -190,6 +216,12 @@ class World {
     }
 
 
+    /**
+     * A function that checks collision with enemies and performs appropriate actions.
+     *
+     * @param None
+     * @return None
+     */
     checkDamageToEnemyCollisions() {
         this.bottleHitsGround();
         this.killNormalChicken();
@@ -198,24 +230,36 @@ class World {
     }
 
 
+    /**
+     * A function that handles bottles hitting the ground, triggers sound effects, 
+     * and removes the bottle from the throwable objects array if it hits the ground.
+     *
+     * @param None
+     * @return None
+     */
     bottleHitsGround() {
         this.throwableObjects.forEach((bottle, index) => {
             if(bottle.y >= 420) {
-                console.log('bottle hits ground');
-                this.sound_bottle_break.play();
+                this.audio.playBottleShatterSound();
                 bottle.y += 0;
                 bottle.speedY = 0;
                 setTimeout(() => {
                     this.throwableObjects.splice(index, 1);
-                    this.sound_bottle_break.pause();
-                    this.sound_bottle_break.currentTime = 0;
-                }, 100)
-                
+                    this.audio.sound_bottle_break.pause();
+                    this.audio.sound_bottle_break.currentTime = 0;
+                }, 100) 
             }
         })
     }
 
 
+    /**
+     * Loops through normal chickens in the level, checks collision with character, 
+     * and performs actions accordingly.
+     *
+     * @param None
+     * @return None
+     */
     killNormalChicken(){
         this.level.normalChicken.forEach((enemy, enemyIndex) => {
             if(this.character.isColliding(enemy) && this.character.y < 200) {
@@ -228,29 +272,52 @@ class World {
     }
 
 
+    /**
+     * Executes specific actions when the bottle hits a normal chicken,
+     * including playing sounds, handling collision, and removing the bottle.
+     *
+     * @param {Object} enemy - The normal chicken enemy object
+     * @param {number} enemyIndex - Index of the normal chicken in the array
+     * @return {undefined}
+     */
     bottleNormalChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.sound_bottle_break.play();
+                this.audio.playBottleShatterSound();
                 this.normalChickenDead(enemy, enemyIndex);
                 this.throwableObjects.splice(bottleIndex, 1);
                 setTimeout(() => {
-                    this.sound_bottle_break.pause();
-                    this.sound_bottle_break.currentTime = 0;
+                    this.audio.sound_bottle_break.pause();
+                    this.audio.sound_bottle_break.currentTime = 0;
                 }, 1000);
             }
         });
     }
 
 
-    normalChickenDead(enemy, enemyIndex) {
+    /**
+     * Handles the actions to be executed when a normal chicken enemy dies,
+     * including updating energy, playing hit sound, and removing the chicken after a delay.
+     *
+     * @param {Object} enemy - The normal chicken enemy that died
+     * @return {undefined}
+     */
+    normalChickenDead(enemy) {
         enemy.energy = 0;
+        this.audio.playNormalEnemyHitSound();
         setTimeout(() => {
-            this.level.normalChicken.splice(enemyIndex, 1);
+            this.level.normalChicken = this.level.normalChicken.filter(chicken => chicken.id !== enemy.id);
         }, 500);
     }
 
 
+    /**
+     * Loops through small chickens in the level, checks collision with character, 
+     * and performs actions accordingly.
+     *
+     * @param None
+     * @return None
+     */
     killSmallChicken(){
         this.level.smallChicken.forEach((enemy, enemyIndex) => {
             if(this.character.isColliding(enemy) && this.character.y < 220) {
@@ -263,31 +330,52 @@ class World {
     }
     
     
+    /**
+     * Executes specific actions when the bottle hits a small chicken, 
+     * including playing sounds, handling collision, and removing the bottle.
+     *
+     * @param {Object} enemy - The small chicken enemy object
+     * @param {number} enemyIndex - Index of the small chicken in the array
+     * @return {undefined}
+     */
     bottleSmallChicken(enemy, enemyIndex){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.sound_bottle_break.play();
+                this.audio.playBottleShatterSound();
                 this.smallChickenDead(enemy, enemyIndex);
                 this.throwableObjects.splice(bottleIndex, 1);
                 setTimeout(() => {
-                    this.sound_bottle_break.pause();
-                    this.sound_bottle_break.currentTime = 0;
-                }, 1000);
-                
-                
+                    this.audio.sound_bottle_break.pause();
+                    this.audio.sound_bottle_break.currentTime = 0;
+                }, 1000);   
             } 
         });
     }
 
 
-    smallChickenDead(enemy, enemyIndex) {
+    /**
+     * Handles the actions to be executed when a small chicken enemy dies,
+     * including updating energy, playing hit sound, and removing the chicken after a delay.
+     *
+     * @param {Object} enemy - The small chicken enemy that died
+     * @return {undefined}
+     */
+    smallChickenDead(enemy) {
         enemy.energy = 0;
+        this.audio.playNormalEnemyHitSound();
         setTimeout(() => {
-            this.level.smallChicken.splice(enemyIndex, 1);
+            this.level.smallChicken = this.level.smallChicken.filter(chicken => chicken.id !== enemy.id);
         }, 500);
     }
 
 
+    /**
+     * Loops through the endboss enemies in the level and initiates bottleEndboss action 
+     * if there are throwableObjects available.
+     *
+     * @param None
+     * @return None
+     */
     killEndboss(){
         this.level.endboss.forEach((enemy) => {
             if(this.throwableObjects.length > 0) {
@@ -297,22 +385,35 @@ class World {
     }
 
 
+    /**
+     * Loops through the throwableObjects to check bottle collision with the endboss enemy,
+     * plays sounds, updates boss percentage, and removes the bottle if collision occurs.
+     *
+     * @param {Object} enemy - The endboss enemy object
+     * @return {undefined}
+     */
     bottleEndboss(enemy){
         this.throwableObjects.forEach((bottle, bottleIndex) => {
             if(bottle.isColliding(enemy)) {
-                this.sound_bottle_break.play();
-                this.throwableObjects.splice(bottleIndex, 1); 
+                this.audio.playBottleShatterSound();
                 this.movableObject.hittingEndbossWithBottle();
                 this.statusBarEndboss.bossPercentage(this.movableObject.energyBoss);
+                this.throwableObjects.splice(bottleIndex, 1); 
                 setTimeout(() => {
-                    this.sound_bottle_break.pause();
-                    this.sound_bottle_break.currentTime = 0; 
+                    this.audio.sound_bottle_break.pause();
+                    this.audio.sound_bottle_break.currentTime = 0; 
                 }, 1000);
             }
         });
     }
 
 
+    /**
+     * Checks if the THROW key is pressed, the last throw happened, and there are available bottles.
+     *
+     * @param None
+     * @return None
+     */
     checkThrowableObjects() {
         if(this.keyboard.THROW){
             if(this.lastThrow() && this.bottleStatus.bottlesAmount > 0) {
@@ -326,6 +427,13 @@ class World {
     }
 
 
+    /**
+     * Calculates the time difference between the current time and the last throw time,
+     * and checks if the time difference is greater than 1 second.
+     *
+     * @param None
+     * @return {boolean} Indicates if the time difference is greater than 1 second
+     */
     lastThrow(){
         this.timeBetweenThrows = new Date().getTime() - this.lastThrowTime;
         this.timeBetweenThrows = this.timeBetweenThrows / 1000;
@@ -333,6 +441,12 @@ class World {
     }
 
 
+    /**
+     * Adds objects to the map by iterating through the objects array and calling addToMap for each object.
+     *
+     * @param {Array} objects - The array of objects to add to the map
+     * @return {void} No return value
+     */
     addObjectsToMap(objects) {    
         objects.forEach((o, index) => {
             this.addToMap(o, index);
@@ -340,6 +454,12 @@ class World {
     }
 
 
+    /**
+     * Adds bottles to the map by iterating through the bottles array and calling addToMap for each bottle.
+     *
+     * @param {Array} bottles - The array of bottles to add to the map
+     * @return {void} No return value
+     */
     addBottlesToMap(bottles) {
         bottles.forEach((b, index) => {
             this.addToMap(b, index);
@@ -347,6 +467,12 @@ class World {
     }
 
 
+    /**
+     * Removes bottles from the map if character collides with a bottle and the total bottle count is less than 10.
+     *
+     * @param None
+     * @return None
+     */
     removeBottlesFromMap() {
         this.level.bottlePickUp.forEach((bottle, index) => {
            if(this.character.isColliding(bottle) && this.bottleStatus.bottlesAmount < 10) {
@@ -357,6 +483,14 @@ class World {
     }
 
 
+    /**
+     * Updates the canvas based on the bottleStatus.bottlesAmount value. 
+     * If the amount is 10, it sets the fill style to 'red' and displays the amount at position (65, 103), 
+     * otherwise sets the fill style to '#9A3E00' and displays the amount at the same position.
+     *
+     * @param None
+     * @return None
+     */
     maximumBottles() {
         if(this.bottleStatus.bottlesAmount === 10) {
             this.ctx.fillStyle = 'red';
@@ -368,6 +502,12 @@ class World {
     }
 
 
+    /**
+     * Adds coins to the map by iterating through the coins array and calling addToMap for each coin.
+     *
+     * @param {Array} coins - The array of coins to add to the map
+     * @return {void} No return value
+     */
     addCoinsToMap(coins) {
         coins.forEach((c, index) => {
             this.addToMap(c, index);
@@ -375,6 +515,13 @@ class World {
     }
 
 
+    /**
+     * Loops through the coins on the map, checks collision with the character,
+     * and removes the coin if there is a collision. Also increments the coin count.
+     *
+     * @param None
+     * @return None
+     */
     removeCoinsFromMap() {
         this.level.coinPickUp.forEach((coin, index) => {
             if(this.character.isColliding(coin)) {
@@ -385,19 +532,24 @@ class World {
     }
 
 
+    /**
+     * Updates the current amount of coins displayed on the canvas.
+     *
+     * @param None
+     * @return None
+     */
     coinsCurrentAmount() {
         this.ctx.fillStyle = '#9A3E00';
         this.ctx.fillText(this.coinStatus.coinsAmount, 65, 143);
     }
 
 
-    showCoinsAmount(coinsAmount, x, y) {
-        this.coinsAmount = coinsAmount;
-        this.x = x;
-        this.y = y;
-    }
-
-    
+    /**
+     * Adds the object to the map, flips the image if needed, draws the object on the canvas, and flips the image back if necessary.
+     *
+     * @param {object} mo - The object to add to the map
+     * @return {void} No return value
+     */
     addToMap(mo){
         if(mo.otherDirection){
             this.flipImage(mo);
@@ -409,6 +561,12 @@ class World {
     }
 
 
+    /**
+     * Saves the canvas state, translates the context, scales the image, and updates the x-coordinate of the object.
+     *
+     * @param {object} mo - The object to flip the image for
+     * @return {void} No return value
+     */
     flipImage(mo) {
         this.ctx.save();
         this.ctx.translate(mo.width, 0);
@@ -417,12 +575,24 @@ class World {
     }
 
 
+    /**
+     * Restores the canvas context and flips the x-coordinate of the object.
+     *
+     * @param {object} mo - The object to flip the x-coordinate
+     * @return {void} No return value
+     */
     flipImageBack(mo) {
         this.ctx.restore();
         mo.x = mo.x * -1;
     }
 
 
+    /**
+     * A function that handles the game won logic by updating the game-won elements and playing background sounds after a delay.
+     *
+     * @param {type} paramName - description of parameter
+     * @return {type} description of return value
+     */
     gameWon(){
         document.querySelector('.game-won').classList.remove('none');
         if(world.coinStatus.coinsAmount === 35){
@@ -434,16 +604,22 @@ class World {
         }
         setTimeout(() => {
             clearAllIntervals();
-            this.backgroundSounds();
+            this.audio.backgroundSounds();
         }, 3000);
     }
     
 
+    /**
+     * A function that handles the game lost logic by updating the game-lost elements and playing background sounds after a delay.
+     *
+     * @param {type} paramName - description of parameter
+     * @return {type} description of return value
+     */
     gameLost(){
         document.querySelector('.game-lost').classList.remove('none');
         setTimeout(() => {
             clearAllIntervals();
-            this.backgroundSounds();
+            this.audio.backgroundSounds();
         }, 3000);
     }
 }

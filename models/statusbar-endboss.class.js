@@ -11,6 +11,11 @@ class StatusBarEndboss extends DrawableObject {
     bossTriggered = false;
 
 
+    /**
+     * Constructor function for initializing the StatusBarEndboss object.
+     *
+     * @return {void} No return value
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -22,6 +27,12 @@ class StatusBarEndboss extends DrawableObject {
     }
 
 
+    /**
+     * Updates the boss percentage and sets the corresponding image for the boss status bar.
+     *
+     * @param {number} percentage - The new boss percentage value.
+     * @return {void} No return value
+     */
     bossPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveBossImageIndex()];
@@ -29,6 +40,12 @@ class StatusBarEndboss extends DrawableObject {
     }
 
 
+    /**
+     * Determines the index of the boss image based on the current boss percentage.
+     *
+     * @param {void} No parameters
+     * @return {number} The index of the boss image.
+     */
     resolveBossImageIndex() {
         if(this.percentage === 100) {
             return 5;

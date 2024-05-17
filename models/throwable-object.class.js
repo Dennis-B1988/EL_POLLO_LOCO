@@ -41,12 +41,15 @@ class ThrowableObject extends MovableObject {
     }
 
 
+    /**
+     * Executes animations based on the object's position.
+     *
+     * @param {void} No parameters
+     * @return {void} No return value
+     */
     animate() {
         setInterval(() => { 
-
             if(this.y >= 420) {
-                
-                
                 this.playAnimation(this.IMAGES_SPLASH);
             } else {
                 this.playAnimation(this.IMAGES_THROWING);

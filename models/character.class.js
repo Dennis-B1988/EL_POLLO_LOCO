@@ -66,6 +66,12 @@ class Character extends MovableObject {
     };
     sleeping = false;
 
+
+    /**
+     * Constructor function for initializing a character object.
+     *
+     * @return {void} No return value
+     */
     constructor() {
         super().loadImage('./assets/img/2_character_pepe/1_idle/idle/I-1.png');
         this.loadImages(this.IMAGES_IDLE);
@@ -79,6 +85,11 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Function that animates the character's movement and camera position.
+     *
+     * @return {void} No return value
+     */
     animate() {    
         setInterval(() => { 
             this.characterMovement();
@@ -92,14 +103,18 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Executes actions based on character's state, such as playing sounds and animations.
+     *
+     */
     deadHurtMove(){
         setInterval(() => {
             if(this.isDead()) {
-                this.playDeadSound();
+                this.world.audio.playDeadSound();
                 this.playAnimation(this.IMAGES_DEAD);
                 this.world.gameLost();
             } else if (this.isHurt()) {
-                this.playHurtSound();
+                this.world.audio.playHurtSound();
                 this.playAnimation(this.IMAGES_HURT);
             } else {
                 this.characterJumpOrWalk();
@@ -108,10 +123,15 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Function that handles character's sleep or idle state based on time difference and character's actions.
+     *
+     * @return {void} No return value
+     */
     sleepOrIdle(){
         setInterval(() => {
             if(this.timeDifference > 15000) {
-                this.playSnoringSound();
+                this.world.audio.playSnoringSound();
                 this.playAnimation(this.IMAGES_SLEEPING);
                 this.sleeping = true;
             } else if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
@@ -121,6 +141,11 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Function that handles the character's sleeping animation.
+     *
+     * @return {void} No return value
+     */
     characterSleeping(){
         setInterval(() => {
             this.playAnimation(this.IMAGES_SLEEPING);
@@ -128,32 +153,54 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Handles the character's movement by pausing walking sound and triggering specific movement actions.
+     *
+     * @param None
+     * @return None
+     */
     characterMovement(){
-        this.world.walking_sound.pause();
+        this.world.audio.walking_sound.pause();
         this.characterMovementRight(); 
         this.characterMovementLeft();
         this.characterMovementJump();
     }
 
 
-
+    /**
+     * Moves the character to the right if the right arrow key is pressed and character is not dead.
+     *
+     * @return {void} No return value
+     */
     characterMovementRight(){
         if(this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x && !this.isDead()) {
             this.moveRight();
-            this.playWalkingSound();
+            this.world.audio.playWalkingSound();
         } 
     }
 
 
+    /**
+     * Moves the character to the left if the left arrow key is pressed and character is not dead.
+     *
+     * @param None
+     * @return {void} No return value
+     */
     characterMovementLeft(){
         if(this.world.keyboard.LEFT && this.x > 0 && !this.isDead()) {
             this.moveLeft();
-            this.playWalkingSound();
+            this.world.audio.playWalkingSound();
             this.otherDirection = true;
         }
     }
 
 
+    /**
+     * Handles the character's jump movement based on keyboard input and character state.
+     *
+     * @param None
+     * @return None
+     */
     characterMovementJump(){
         if(this.world.keyboard.UP && !this.isAboveGround() && !this.isDead() || this.world.keyboard.SPACE && !this.isAboveGround() && !this.isDead()) {
             this.jump();
@@ -161,9 +208,15 @@ class Character extends MovableObject {
     }
 
     
+    /**
+     * Handles the character's jumping or walking movement based on character state and keyboard input.
+     *
+     * @param None
+     * @return None
+     */
     characterJumpOrWalk(){
         if(this.isAboveGround()) {
-            this.playJumpingSound();
+            this.world.audio.playJumpingSound();
             this.playAnimation(this.IMAGES_JUMPING);
             this.lastIdleTime = new Date().getTime();
         } else if (this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
@@ -173,6 +226,12 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Handles character being hit by the end boss if the boss has energy and the character is not dead.
+     *
+     * @param None
+     * @return None
+     */
     characterHitByEndboss(){
         if(this.world.movableObject.energyBoss > 0 && !this.isDead()) {
             this.knockback();
@@ -180,6 +239,12 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Function that handles the character's idle state when not above ground and no directional keys are pressed.
+     *
+     * @param None
+     * @return None
+     */
     characterIdle(){
         if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
             this.playAnimation(this.IMAGES_IDLE);
@@ -187,53 +252,26 @@ class Character extends MovableObject {
     }
 
 
+    /**
+     * Sets the current time based on the system time.
+     *
+     * @param None
+     * @return Number The current time in milliseconds.
+     */
     checkCurrentTime(){
         this.currentTime = new Date().getTime();
         return this.currentTime;
     }
 
 
+    /**
+     * Calculates the time difference between the current time and the last idle time.
+     *
+     * @param None
+     * @return {boolean} Indicates if the time difference is greater than 15000
+     */
     checkTimeSince(){
         this.timeDifference = this.currentTime - this.lastIdleTime;
         return this.timeDifference > 15000;
-    }
-
-
-    playWalkingSound(){
-        if(soundOn && !this.isAboveGround()) {
-            this.world.walking_sound.play();
-            this.world.snoring_sound.pause();
-        }
-    }
-
-
-    playJumpingSound(){
-        if(soundOn){
-            this.world.jump_sound.play();
-            this.world.snoring_sound.pause();
-        }
-    }
-
-
-    playSnoringSound(){
-        if(soundOn){
-            this.world.snoring_sound.play();
-        }
-    }
-
-
-    playHurtSound(){
-        if(soundOn){
-            this.world.hit_sound.play();
-            this.world.snoring_sound.pause();
-        }
-    }
-
-
-    playDeadSound(){
-        if(soundOn){
-            this.world.dead_sound.play();
-            this.world.snoring_sound.pause();
-        }
-    }
+    } 
 }

@@ -7,10 +7,14 @@ class StatusBar extends DrawableObject {
         './assets/img/7_statusbars/1_statusbar/2_statusbar_health/green/80.png',
         './assets/img/7_statusbars/1_statusbar/2_statusbar_health/green/100.png'
     ];
-
     percentage = 100;
 
 
+    /**
+     * Constructor function for initializing the StatusBar object.
+     *
+     * @return {void} No return value
+     */
     constructor() {
         super();
         this.loadImages(this.IMAGES);
@@ -22,6 +26,12 @@ class StatusBar extends DrawableObject {
     }
 
 
+    /**
+     * Sets the percentage value, calculates the image path based on the resolved index, and updates the image cache accordingly.
+     *
+     * @param {number} percentage - The new percentage value to be set.
+     * @return {void} No return value
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let path = this.IMAGES[this.resolveImageIndex()];
@@ -29,6 +39,12 @@ class StatusBar extends DrawableObject {
     }
 
 
+    /**
+     * Determines the index based on the current percentage value.
+     * 
+     * @param {void} No parameters
+     * @return {number} The index of the image based on the percentage.
+     */
     resolveImageIndex() {
         if(this.percentage === 100) {
             return 5;
