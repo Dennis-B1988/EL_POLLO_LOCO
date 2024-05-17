@@ -12,6 +12,8 @@ class Sounds {
     endboss_hurt = new Audio('./assets/audio/enemies/endboss-hurt.mp3');
     endboss_dead = new Audio('./assets/audio/enemies/endboss-dead.mp3');
     characterDead = false;
+    background_music = true;
+    boss_music = false;
 
 
     /**
@@ -28,14 +30,18 @@ class Sounds {
         this.enemySounds();
     }
 
-
+    
     /**
      * Resumes playing the background sound.
      *
      */
     resumeSounds() {
         soundOn = true;
-        this.background_sound.play();
+        if(this.background_music) {
+            this.background_sound.play();
+        } else {
+            this.endboss_sound.play();
+        }
     }
 
 
@@ -81,15 +87,18 @@ class Sounds {
     }
 
 
+    
     /**
      * Plays the background music, sets it to loop, and adjusts the volume.
      *
      */
     backgroundMusic(){
         if(soundOn){
+            this.background_music = true;
+            this.background_sound.currentTime = 0;
             this.background_sound.play();
             this.background_sound.loop = true;
-            this.background_sound.volume = 0.4;
+            this.background_sound.volume = 0.4;     
         }
     }
 
@@ -158,8 +167,10 @@ class Sounds {
     playDeadSound(){
         if(soundOn && this.characterDead == false){
             this.dead_sound.play();
-            this.snoring_sound.pause();
             this.characterDead = true;
+            this.snoring_sound.pause();
+            this.endboss_sound.pause();
+            this.endboss_sound.currentTime = 0;
         }
     }
 
@@ -191,13 +202,15 @@ class Sounds {
 
 
     /**
-     * Plays the endboss sound if sound is on. Pauses the background sound, plays the endboss sound, sets it to loop, and adjusts the volume.
+     * Plays the endboss sound if sound is on. Pauses the background sound, plays the endboss sound, 
+     * sets it to loop, and adjusts the volume.
      *
      * @param None
      * @return None
      */
     playEndbossSound(){
         if(soundOn){
+            this.background_music = false;
             this.background_sound.pause();
             this.endboss_sound.play();
             this.endboss_sound.loop = true;
@@ -241,6 +254,8 @@ class Sounds {
     playEndbossDeadSound(){
         if(soundOn){
             this.endboss_dead.play();
+            this.endboss_sound.pause();
+            this.endboss_sound.currentTime = 0;
         }
     }
 }
