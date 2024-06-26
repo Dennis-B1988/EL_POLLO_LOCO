@@ -145,12 +145,7 @@
 
   .portrait-mode {
     display: none;
-  }
-}
-
-@media (orientation: portrait) and (max-width: 740px) {
-  .portrait-mode {
-    background-image: url('../assets/img/10_page_background/turn-phone.png');
+    background-image: url("../assets/img/10_page_background/turn-phone.png");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -160,28 +155,46 @@
     bottom: 0;
     left: 0;
     z-index: 999;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 740px) {
+  .portrait-mode {
     display: flex;
+  }
+
+  .start-screen {
+    display: none;
   }
 }
 
 @media (orientation: portrait) and (max-width: 450px) {
   .portrait-mode {
-    background-image: url('../assets/img/10_page_background/turn-phone.png');
-    background-position: center;
-    background-repeat: no-repeat;
     background-size: contain;
   }
-}
 
-@media (orientation: portrait) and (max-width: 1280px) and (max-height: 853px) {
-  .portrait-mode {
-    background-size: cover;
+  .start-screen {
+    display: none;
   }
 }
 
 @media (orientation: portrait) and (max-width: 1280px) and (max-height: 853px) {
   .portrait-mode {
     background-size: cover;
+  }
+
+  .start-screen {
+    display: none;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 1280px) and (max-height: 853px) {
+  .portrait-mode {
+    background-size: cover;
+  }
+
+  .start-screen {
+    display: none;
   }
 }
 

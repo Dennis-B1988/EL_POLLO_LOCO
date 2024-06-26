@@ -3,10 +3,12 @@ let world;
 let keyboard = new Keyboard();
 let soundOn = true;
 
+
 /**
  * Initializes the game by clearing intervals, setting initial game-won and game-lost elements to hidden, 
  * initializing the level, starting the game, and creating a new World object.
  *
+ * @return {undefined} No return value
  */
 function init(){
     clearAllIntervals();
@@ -17,6 +19,8 @@ function init(){
     canvas = document.getElementById("canvas");
     world = new World(canvas, keyboard); 
     world.audio.backgroundMusic();
+    preventContextMenuLeftRight();
+    preventContextMenuJumpThrow();
 }
 
 
@@ -68,9 +72,12 @@ document.addEventListener('keyup', (event) => {
  *
  * @param {TouchEvent} event - The touchstart event
  */
+let touchTimeout;
+
 document.addEventListener('touchstart', (event) => {
     const touchedElement = event.target.closest('button');
     if (!touchedElement) return;
+
     const buttonId = touchedElement.id;
     if (buttonId === 'left') {
         keyboard.LEFT = true;
@@ -81,7 +88,8 @@ document.addEventListener('touchstart', (event) => {
     } else if (buttonId === 'jump') {
         keyboard.SPACE = true;
     }
-})
+});
+
 
 
 /**
@@ -93,6 +101,7 @@ document.addEventListener('touchstart', (event) => {
 document.addEventListener('touchend', (event) => {
     const touchedElement = event.target.closest('button');
     if (!touchedElement) return;
+
     const buttonId = touchedElement.id;
     if (buttonId === 'left') {
         keyboard.LEFT = false;
@@ -103,7 +112,7 @@ document.addEventListener('touchend', (event) => {
     } else if (buttonId === 'jump') {
         keyboard.SPACE = false;
     }
-})
+});
 
 
 /**
@@ -148,6 +157,49 @@ document.addEventListener('mouseup', (event) => {
         keyboard.SPACE = false;
     }
 })
+
+
+/**
+ * Prevents the default context menu behavior for the left and right buttons.
+ *
+ * @return {void} This function does not return anything.
+ */
+function preventContextMenuLeftRight() {
+    document.getElementById('left').oncontextmenu = function(event) {
+    event.preventDefault();
+    event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+    event.stopImmediatePropagation();
+    return false;
+    };
+    document.getElementById('right').oncontextmenu = function(event) {
+    event.preventDefault();
+    event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+    event.stopImmediatePropagation();
+    return false;
+    };
+}
+
+
+/**
+ * Prevents the context menu from appearing when the jump or throw buttons are right-clicked.
+ *
+ * @param {Event} event - The contextmenu event.
+ * @return {boolean} Returns false to prevent the default context menu behavior.
+ */
+function preventContextMenuJumpThrow() {
+    document.getElementById('jump').oncontextmenu = function(event) {
+    event.preventDefault();
+    event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+    event.stopImmediatePropagation();
+    return false;
+    };
+    document.getElementById('throw').oncontextmenu = function(event) {
+    event.preventDefault();
+    event.stopPropagation(); // not necessary in my case, could leave in case stopImmediateProp isn't available? 
+    event.stopImmediatePropagation();
+    return false;
+    };
+}
 
 
 /**

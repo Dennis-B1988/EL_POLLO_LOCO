@@ -98,7 +98,7 @@ class Sounds {
             this.background_sound.currentTime = 0;
             this.background_sound.play();
             this.background_sound.loop = true;
-            this.background_sound.volume = 0.4;     
+            this.background_sound.volume = 0.2;     
         }
     }
 
@@ -126,6 +126,7 @@ class Sounds {
     playJumpingSound(){
         if(soundOn){
             this.jump_sound.play();
+            this.jump_sound.volume = 0.2;
             this.snoring_sound.pause();
         }
     }
@@ -140,6 +141,7 @@ class Sounds {
     playSnoringSound(){
         if(soundOn){
             this.snoring_sound.play();
+            this.snoring_sound.volume = 0.2;
         }
     }
 
@@ -153,6 +155,7 @@ class Sounds {
     playHurtSound(){
         if(soundOn){
             this.hit_sound.play();
+            this.hit_sound.volume = 0.2;
             this.snoring_sound.pause();
         }
     }
@@ -167,6 +170,7 @@ class Sounds {
     playDeadSound(){
         if(soundOn && this.characterDead == false){
             this.dead_sound.play();
+            this.dead_sound.volume = 0.2;
             this.characterDead = true;
             this.snoring_sound.pause();
             this.endboss_sound.pause();
@@ -214,7 +218,7 @@ class Sounds {
             this.background_sound.pause();
             this.endboss_sound.play();
             this.endboss_sound.loop = true;
-            this.endboss_sound.volume = 0.4;
+            this.endboss_sound.volume = 0.2;
         }
     }
 
@@ -228,6 +232,7 @@ class Sounds {
     playEndbossAlertedSound(){
         if(soundOn){
             this.endboss_alerted_sound.play();
+            this.endboss_alerted_sound.volume = 0.2;
         }
     }
 
@@ -241,6 +246,7 @@ class Sounds {
     playEndbossHurtSound(){
         if(soundOn){
             this.endboss_hurt.play();
+            this.endboss_hurt.volume = 0.2;
         }
     }
 
@@ -254,6 +260,7 @@ class Sounds {
     playEndbossDeadSound(){
         if(soundOn){
             this.endboss_dead.play();
+            this.endboss_dead.volume = 0.2;
             this.endboss_sound.pause();
             this.endboss_sound.currentTime = 0;
         }

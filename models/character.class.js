@@ -8,6 +8,13 @@ class Character extends MovableObject {
     lastIdleTime = new Date().getTime();
     timeDifference = 0;
     IMAGES_IDLE = [
+        './assets/img/2_character_pepe/1_idle/idle/I-1.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-2.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-3.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-4.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-5.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-6.png',
+        './assets/img/2_character_pepe/1_idle/idle/I-7.png',
         './assets/img/2_character_pepe/1_idle/idle/I-8.png',
         './assets/img/2_character_pepe/1_idle/idle/I-9.png',
         './assets/img/2_character_pepe/1_idle/idle/I-10.png'
@@ -98,7 +105,8 @@ class Character extends MovableObject {
             this.checkTimeSince();
         }, 1000 / 60);
  
-        this.sleepOrIdle();
+        this.sleep();
+        this.idle();
         this.deadHurtMove();   
     }
 
@@ -111,6 +119,7 @@ class Character extends MovableObject {
         setInterval(() => {
             if(this.isDead()) {
                 this.characterDead();
+                this.world.audio.background_sound.pause();
             } else if (this.isHurt()) {
                 this.lastIdleTime = new Date().getTime();
                 this.world.audio.playHurtSound();
@@ -127,16 +136,32 @@ class Character extends MovableObject {
      *
      * @return {void} No return value
      */
-    sleepOrIdle(){
+    sleep(){
         setInterval(() => {
             if(this.timeDifference > 15000) {
                 this.world.audio.playSnoringSound();
                 this.playAnimation(this.IMAGES_SLEEPING);
                 this.sleeping = true;
-            } else if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
-                this.characterIdle();
-            }
+            } 
         }, 1000 / 1);
+    }
+
+
+    /**
+     * Executes the idle behavior of the character.
+     *
+     * This function checks if the character is not above ground and no directional keys are pressed.
+     * If the conditions are met, it calls the `characterIdle` function.
+     * The idle behavior is executed every 400 milliseconds.
+     *
+     * @return {void} This function does not return a value.
+     */
+    idle(){
+        setInterval(() => {
+            if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
+        }, 200);
     }
 
 
@@ -235,19 +260,6 @@ class Character extends MovableObject {
         if(world.endboss.energyBoss > 0 && !this.isDead()) {
             this.lastIdleTime = new Date().getTime();
             this.knockback();
-        }
-    }
-
-
-    /**
-     * Function that handles the character's idle state when not above ground and no directional keys are pressed.
-     *
-     * @param None
-     * @return None
-     */
-    characterIdle(){
-        if(!this.isAboveGround() && !this.world.keyboard.RIGHT && !this.world.keyboard.LEFT) {
-            this.playAnimation(this.IMAGES_IDLE);
         }
     }
 

@@ -40,7 +40,6 @@ class World {
         this.collect();
         this.ctx.font = '48px Zabras';
         this.ctx.fillStyle = '#9A3E00';   
-        // this.movableObject = new MovableObject();
     }
 
 
@@ -335,7 +334,7 @@ class World {
         setTimeout(() => {
             clearAllIntervals();
             this.audio.backgroundSounds();
-        }, 3000);
+        }, 1500);
     }
     
 
@@ -350,6 +349,6 @@ class World {
         setTimeout(() => {
             clearAllIntervals();
             this.audio.backgroundSounds();
-        }, 3000);
+        }, 1500);
     }
 }

@@ -19,6 +19,7 @@ class ThrowableObject extends MovableObject {
         left: 20,
         right: 20
     };
+    damage = new Damage();
 
 
     /**
@@ -49,12 +50,12 @@ class ThrowableObject extends MovableObject {
      */
     animate() {
         setInterval(() => { 
-            if(this.y >= 420) {
+            if(this.y >= 300) {
                 this.playAnimation(this.IMAGES_SPLASH);
             } else {
                 this.playAnimation(this.IMAGES_THROWING);
             }
-        }, 1000 / 60);
+        }, 1000 / 30);
     }
 
 
@@ -64,15 +65,15 @@ class ThrowableObject extends MovableObject {
      * @return {void} No return value
      */
     throw(){
-        this.speedY = 0;
+        this.speedY = 25;
         this.applyGravity();
         setInterval(() => {
-            if(this.y < 420){
-                this.x += 35;
+            if(this.y < 440){
+                this.x += 20;
             } else {
                 this.x += 0;
                 this.y += 0;
             }
-        }, 25)
+        }, 1000 / 30)
     } 
 }
